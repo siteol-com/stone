@@ -16,9 +16,10 @@
     </parent>
 
     <dependencies>
+        <!-- SpringBoot Web -->
         <dependency>
-            <groupId>com.siteol</groupId>
-            <artifactId>system</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 

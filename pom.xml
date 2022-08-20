@@ -11,8 +11,9 @@
     <modules>
         <module>common</module>
         <module>config</module>
+        <module>gateway</module>
         <module>security</module>
-        <module>system</module>
+        <module>platform</module>
         <module>service</module>
     </modules>
     <packaging>pom</packaging>
@@ -20,11 +21,13 @@
     <properties>
         <common.version>1.0</common.version>
         <config.version>1.0</config.version>
+        <gateway.version>1.0</gateway.version>
         <security.version>1.0</security.version>
-        <system.version>1.0</system.version>
+        <platform.version>1.0</platform.version>
         <service.version>1.0</service.version>
         <java.version>1.8</java.version>
         <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
+        <spring-cloud.version>2.2.8.RELEASE</spring-cloud.version>
         <mysql.version>8.0.21</mysql.version>
         <mybatis-plus.version>3.5.0</mybatis-plus.version>
         <lombok.version>1.18.22</lombok.version>
@@ -32,18 +35,36 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    <!-- Spring Cloud Hoxton.SR9 & Spring Cloud Alibaba 2.2.7.RELEASE  -->
+    <!-- Spring Cloud Hoxton.SR12 & Spring Cloud Alibaba 2.2.8.RELEASE & SpringBoot 2.3.12.RELEASE  -->
     <!-- https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E -->
     <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent -->
+    <!-- 采用dependencies解决单继承问题
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.12.RELEASE</version>
         <relativePath/>
     </parent>
+     -->
     <!-- Common Dependency List -->
     <dependencyManagement>
         <dependencies>
+            <!-- SpringBoot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- SpringCloud Alibaba -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- Sub Dep -->
             <dependency>
                 <groupId>com.siteol</groupId>
@@ -57,20 +78,18 @@
             </dependency>
             <dependency>
                 <groupId>com.siteol</groupId>
+                <artifactId>gateway</artifactId>
+                <version>${gateway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.siteol</groupId>
                 <artifactId>security</artifactId>
                 <version>${security.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.siteol</groupId>
-                <artifactId>system</artifactId>
-                <version>${system.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <artifactId>platform</artifactId>
+                <version>${platform.version}</version>
             </dependency>
             <!-- SpringBoot Web -->
             <dependency>
