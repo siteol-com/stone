@@ -1,4 +1,4 @@
-package com.siteol.data.response;
+package com.siteOl.data.response;
 
 import lombok.Getter;
 import lombok.Setter;
