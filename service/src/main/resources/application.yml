@@ -1,0 +1,12 @@
+server:
+  port: 8080
+# dev 开发环境 prod 线上环境
+spring:
+  application:
+    name: stone
+  profiles:
+    active: dev
+  # 允许循环依赖
+  main:
+    allow-circular-references: true
+

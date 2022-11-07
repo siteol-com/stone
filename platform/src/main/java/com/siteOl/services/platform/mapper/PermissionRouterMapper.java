@@ -6,11 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- * 授权关系，权限与路由关系 Mapper 接口
+ * 授权关系，权限与路由的关系 Mapper 接口
  * </p>
  *
  * @author 米虫@mebugs.com
- * @since 2022-09-13
+ * @since 2022-11-07
  */
 @Mapper
 public interface PermissionRouterMapper extends BaseMapper<PermissionRouter> {

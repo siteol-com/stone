@@ -18,8 +18,8 @@
     <dependencies>
         <!-- SpringBoot Web -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.siteol</groupId>
+            <artifactId>platform</artifactId>
         </dependency>
     </dependencies>
 

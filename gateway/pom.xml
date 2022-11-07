@@ -13,7 +13,7 @@
         <groupId>com.siteol</groupId>
         <version>1.0</version>
     </parent>
-
+    <!-- 单机版GateWay暂时不涉及处理 -->
     <dependencies>
         <dependency>
             <groupId>com.siteol</groupId>

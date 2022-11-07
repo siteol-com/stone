@@ -12,7 +12,7 @@ import lombok.Setter;
  * </p>
  *
  * @author 米虫@mebugs.com
- * @since 2022-09-13
+ * @since 2022-11-07
  */
 @Getter
 @Setter
@@ -42,9 +42,9 @@ public class Router implements Serializable {
     private Integer status;
 
     /**
-     * 父级路由ID
+     * 是否是开放接口 0 不是 1 是 开放接口无需授权
      */
-    private Long pid;
+    private Integer open;
 
 
 }

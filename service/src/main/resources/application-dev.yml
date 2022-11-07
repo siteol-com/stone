@@ -1,0 +1,50 @@
+spring:
+  # static resouce for dev
+  mvc:
+    static-path-pattern: /uploads/**
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/uploads/
+  datasource: 
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-test-query: SELECT 1
+      max-lifetime: 800000
+      idle-timeout: 20000
+      maximum-pool-size: 10
+      minimum-idle: 3
+    url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+  redis:
+    host: localhost
+    database: 0
+# mybatis
+mybatis-plus:
+  mapper-locations:
+  - classpath:mapper/**/*.xml
+  global-config:
+    banner: false
+  # FOR DEV LOOK THE SQL
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# Logger Config
+logging:
+  config:
+    #FOR PROD
+    #classpath: logback-spring.xml
+    #FOR DEV
+    level:
+      com.siteOL: debug
+
+# 应用自定义配置
+stone:
+  # DBInit 0 默认 1 执行数据库初始化 2 执行数据库升级
+  db-init: 0
+  # LogConfig 日志目录
+  log-path: D:/Mebugs/siteol/logs
+  # 文件上传路径
+  # UPLOAD FOR DEV
+  upload-path: D:/Mebugs/siteol/web/center/static
+

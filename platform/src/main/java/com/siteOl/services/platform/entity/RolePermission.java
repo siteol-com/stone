@@ -9,16 +9,16 @@ import lombok.Setter;
 
 /**
  * <p>
- * 授权关系，权限与套餐关系
+ * 授权关系，角色与权限的关系
  * </p>
  *
  * @author 米虫@mebugs.com
- * @since 2022-09-13
+ * @since 2022-11-07
  */
 @Getter
 @Setter
-@TableName("permission_package")
-public class PermissionPackage implements Serializable {
+@TableName("role_permission")
+public class RolePermission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,9 +29,9 @@ public class PermissionPackage implements Serializable {
     private Long id;
 
     /**
-     * 套餐ID
+     * 角色ID
      */
-    private Long packageId;
+    private Long roleId;
 
     /**
      * 权限ID

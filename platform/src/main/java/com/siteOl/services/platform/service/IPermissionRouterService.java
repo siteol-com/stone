@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- * 授权关系，权限与路由关系 服务类
+ * 授权关系，权限与路由的关系 服务类
  * </p>
  *
  * @author 米虫@mebugs.com
- * @since 2022-09-13
+ * @since 2022-11-07
  */
 public interface IPermissionRouterService extends IService<PermissionRouter> {
 

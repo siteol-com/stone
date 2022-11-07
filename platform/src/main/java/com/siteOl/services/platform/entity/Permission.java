@@ -8,11 +8,11 @@ import lombok.Setter;
 
 /**
  * <p>
- * 权限表（基础权限为角色赋予/业务权限由套餐处理）
+ * 权限表，可分配的基础权限结构体
  * </p>
  *
  * @author 米虫@mebugs.com
- * @since 2022-09-13
+ * @since 2022-11-07
  */
 @Getter
 @Setter

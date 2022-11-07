@@ -9,29 +9,29 @@ import lombok.Setter;
 
 /**
  * <p>
- * 授权关系，权限与角色关系
+ * 租户类型下默认具备的权限
  * </p>
  *
  * @author 米虫@mebugs.com
- * @since 2022-09-13
+ * @since 2022-11-07
  */
 @Getter
 @Setter
-@TableName("permission_role")
-public class PermissionRole implements Serializable {
+@TableName("tenant_permission")
+public class TenantPermission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 关联ID
+     * 数据ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 角色ID
+     * 租户类型 0 超管（全局） 1 代理机构 2 企业 3 其他
      */
-    private Long roleId;
+    private Long tenantType;
 
     /**
      * 权限ID

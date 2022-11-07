@@ -13,7 +13,7 @@ import lombok.Setter;
  * </p>
  *
  * @author 米虫@mebugs.com
- * @since 2022-09-13
+ * @since 2022-11-07
  */
 @Getter
 @Setter
@@ -38,7 +38,7 @@ public class Tenant implements Serializable {
     private String alias;
 
     /**
-     * 租户类型 0 超管 1 代理机构 2 企业
+     * 租户类型 0 超管 1 代理机构 2 企业 3 其他
      */
     private Integer type;
 

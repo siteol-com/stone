@@ -8,7 +8,8 @@
     <name>platform</name>
     <version>1.0</version>
     <description>PlatForm</description>
-    <packaging>jar</packaging>
+    <!-- 单机版作为依赖加载到service -->
+    <!-- <packaging>jar</packaging> -->
     <parent>
         <artifactId>stone</artifactId>
         <groupId>com.siteol</groupId>
@@ -54,6 +55,11 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- AOP -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
         </dependency>
     </dependencies>
 

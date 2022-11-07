@@ -27,10 +27,19 @@ public class CodeMakeUtils {
         String userName = "root";
         String password = "123456";
         String projectName = "platform";
-        String basePackage = "";
+        String basePackage = "com.siteOl.services";
         String module = "platform";
         String author = "米虫@mebugs.com";
-        String[] tables =  new String[]{"tenant","account","role","package","router","permission","permission_package","permission_role","permission_router"};
+        String[] tables =  new String[]{
+                "account",
+                "permission",
+                "permission_router",
+                "role",
+                "role_permission",
+                "router",
+                "tenant",
+                "tenant_permission"
+        };
         // 调用代码生成
         codeMaker(url,userName,password,projectName,basePackage,module,author,tables);
     }
@@ -58,7 +67,7 @@ public class CodeMakeUtils {
         basePackage = (basePackage == null || ("").equals(basePackage)) ? "com.siteOl.services" : basePackage;
         // 包配置
         String mapperPath = projectPath+"resources"+ File.separator + "mapper" + File.separator + module;
-        PackageConfig packageConfig = new PackageConfig.Builder().parent(basePackage).moduleName(module).pathInfo(Collections.singletonMap(OutputFile.mapperXml, mapperPath)).build();
+        PackageConfig packageConfig = new PackageConfig.Builder().parent(basePackage).moduleName(module).pathInfo(Collections.singletonMap(OutputFile.xml, mapperPath)).build();
         // 模板配置（使用MyBatis-Plus自带的）
         // 代码配置
         StrategyConfig strategyConfig = new StrategyConfig.Builder().addInclude(tables)// 指明生码表
