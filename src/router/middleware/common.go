@@ -39,7 +39,7 @@ func returnMsgTrans(respBody interface{}, c *gin.Context, middlewareName, traceI
 		res = resp.SysErr
 	} else {
 		// 非400错误执行翻译
-		if res.Code != 400 {
+		if res.Code != constant.RespValidateErrCode {
 			// TODO 执行翻译
 			res.Msg = "Trans"
 		}

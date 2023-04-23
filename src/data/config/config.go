@@ -26,8 +26,8 @@ type Server struct {
 
 // MySQL MySQL数据配置组
 type MySQL struct {
-	Platform string // 授权平台
-	Blog     string // 博客应用
+	Plat string // 授权平台
+	Blog string // 博客应用
 }
 
 // Redis Redis配

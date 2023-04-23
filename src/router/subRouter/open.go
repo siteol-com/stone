@@ -12,6 +12,7 @@ func OpenRouter(router *gin.Engine) {
 	{
 		// 开放账密登陆
 		PlatFormRouter.POST("/auth/login", platHandler.AuthLogin)
-
+		// 开放租户信息获取
+		PlatFormRouter.POST("/tenant/get", platHandler.GetOpenTenant)
 	}
 }

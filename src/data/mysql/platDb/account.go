@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// Account 数据库表结构映射
+// Account 用户表
 type Account struct {
 	ID         uint64     // 账号ID
 	Account    string     // 账号
@@ -18,13 +18,13 @@ type Account struct {
 }
 
 // TableName 实现自定义表名
-func (a *Account) TableName() string {
+func (t *Account) TableName() string {
 	return "account"
 }
 
 // FindOne 基于对象实施查询
-func (a *Account) FindOne() (res *Account, err error) {
+func (t *Account) FindOne() (res *Account, err error) {
 	res = new(Account)
-	err = actuator.FindOneByObject(platformDb, a, res)
+	err = actuator.FindOneByObject(platDb, t, res)
 	return
 }

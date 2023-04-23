@@ -8,17 +8,17 @@ import (
 	"time"
 )
 
-var platformDb *gorm.DB
+var platDb *gorm.DB
 
 // InitPlatFromDb 初始化平台数据库
 func InitPlatFromDb() {
 	// 采用默认配置打开数据可
-	db, err := gorm.Open(mysql.Open(config.RunConfig.MySQL.Platform), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(config.RunConfig.MySQL.Plat), &gorm.Config{})
 	if err != nil {
 		log.FatalF("Open PlatDb Fail . Err Is : %s", err)
 		return
 	}
-	platformDb = db
+	platDb = db
 	log.InfoF("Init PlatDb Success . ")
 }
 

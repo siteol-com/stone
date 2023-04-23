@@ -5,7 +5,7 @@
     "LogRoot": 2
   },
   "MySQL": {
-    "Platform": "root:123456@tcp(localhost:3306)/platform?charset=utf8mb4&parseTime=True&loc=Local",
+    "Plat": "root:123456@tcp(localhost:3306)/plat?charset=utf8mb4&parseTime=True&loc=Local",
     "Blog": "root:123456@tcp(localhost:3306)/blog"
   },
   "Redis":{
