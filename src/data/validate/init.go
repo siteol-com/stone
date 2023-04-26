@@ -7,6 +7,7 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"reflect"
 	"runtime"
+	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/utils/log"
 	"strings"
 
@@ -18,7 +19,6 @@ import (
 )
 
 var v *validator.Validate                        // TODO 自定义校验器使用
-var transLang = []string{"zh", "en"}             // 支持更多语言请添加
 var transMap = make(map[string]ut.Translator, 0) // 校验错误取这个Map进行错误翻译
 
 // init
@@ -41,14 +41,15 @@ func transInit() (validate *validator.Validate, err error) {
 		uni := ut.New(zhT, zhT, enT)
 		validate = vObj
 		// 初始化全部翻译对象
-		for _, local := range transLang {
-			trans, o := uni.GetTranslator(local)
+		for _, local := range constant.TransLangSupport {
+			initLocal := local[:strings.Index(local, "-")]
+			trans, o := uni.GetTranslator(initLocal)
 			if !o {
 				err = errors.New("GetTranslator Err")
 				return
 			}
 			// 注册全部翻译器
-			switch local {
+			switch initLocal {
 			case "en":
 				err = enTrans.RegisterDefaultTranslations(validate, trans)
 			case "zh":

@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	C_SYS_ENV  = "ENV"
-	C_SYS_NODE = "NODE"
+	CSysEnv  = "ENV"
+	CSysNode = "NODE"
 
 	Product = "prod"
 	Staging = "stag"
@@ -69,9 +69,9 @@ func sysEnv() {
 	if envFlag != "" {
 		SysEnv = envFlag
 	} else {
-		SysEnv = os.Getenv(C_SYS_ENV)
+		SysEnv = os.Getenv(CSysEnv)
 		if SysEnv == "" {
-			fmt.Printf("System environment variable `%s` not set, must set to `testing` or `staging` or `product`\n", C_SYS_ENV)
+			fmt.Printf("System environment variable `%s` not set, must set to `testing` or `staging` or `product`\n", CSysEnv)
 			os.Exit(1)
 		}
 	}
@@ -79,9 +79,9 @@ func sysEnv() {
 }
 
 func systemNode() {
-	SysNode = os.Getenv(C_SYS_NODE)
+	SysNode = os.Getenv(CSysNode)
 	if SysNode == "" {
-		fmt.Printf("System node variable `%s` not set, must set to app01/app02/app03\n", C_SYS_NODE)
+		fmt.Printf("System node variable `%s` not set, must set to app01/app02/app03\n", CSysNode)
 		os.Exit(1)
 	}
 	fmt.Printf("Sytem Node:\t %s\n", SysNode)

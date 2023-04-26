@@ -13,4 +13,9 @@ const (
 	StatusOpen  = 1 // 正常 启动
 	StatusLock  = 2 // 禁用 锁定
 	StatusClose = 3 // 移除 弃用
+
+	TransLangCacheKey = "TranLangMap" // 响应码翻译缓存Map的Key
 )
+
+// TransLangSupport 支持更多语言请添加
+var TransLangSupport = []string{"zh-CN", "en-US"}

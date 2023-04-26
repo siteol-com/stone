@@ -13,7 +13,7 @@ import (
 func setLang(c *gin.Context) {
 	lang := c.GetHeader(constant.HeaderLang)
 	if lang == "" {
-		lang = "zh"
+		lang = "zh-CN"
 	}
 	c.Set(constant.HeaderLang, lang)
 }
@@ -40,8 +40,8 @@ func returnMsgTrans(respBody interface{}, c *gin.Context, middlewareName, traceI
 	} else {
 		// 非400错误执行翻译
 		if res.Code != constant.RespValidateErrCode {
-			// TODO 执行翻译
-			res.Msg = "Trans"
+			// 执行翻译
+			res.Msg = runMsgTrans(res, c.GetString(constant.HeaderLang), c.GetString(constant.TraceID))
 		}
 	}
 	// JSON序列化
