@@ -7,9 +7,9 @@ type OpenTenantReq struct {
 
 // OpenTenantRes 开放租户响应
 type OpenTenantRes struct {
-	Name       string `json:"name"`       // 租戶名称
-	Alias      string `json:"alias"`      // 租戶别名
-	Theme      string `json:"theme"`      // 租户模板
-	Logo       string `json:"logo"`       // 租户Logo
-	Background string `json:"background"` // 租户背景CSS（图片或颜色）
+	Name  string `json:"name"`  // 租戶名称
+	Alias string `json:"alias"` // 租戶别名
+	Theme string `json:"theme"` // 租户模板
+	Logo  string `json:"logo"`  // 租户Logo
+	Icon  string `json:"icon"`  // 租户Icon
 }

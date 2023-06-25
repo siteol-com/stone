@@ -15,14 +15,14 @@ func AuthLogin(c *gin.Context) {
 	// TraceID 日志追踪
 	traceID := c.GetString(constant.TraceID)
 	// 参数读取
-	req := &platModel.AuthLogin{}
+	req := &platModel.AuthLoginReq{}
 	// 校验并且 解析请求数据
 	err, reqObj := validate.Readable(c, req)
 	if err != nil {
 		return
 	}
-	req = reqObj.(*platModel.AuthLogin)
+	req = reqObj.(*platModel.AuthLoginReq)
 	// 执行登陆
-	res := platService.Login(traceID, req)
+	res := platService.AuthLogin(traceID, req)
 	c.Set(constant.RespBody, res)
 }

@@ -1,8 +1,10 @@
 package middleware
 
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"net/http"
 	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/resp"
@@ -12,10 +14,30 @@ import (
 // 获取语言并设置
 func setLang(c *gin.Context) {
 	lang := c.GetHeader(constant.HeaderLang)
-	if lang == "" {
+	if lang == "" || lang == "null" {
 		lang = "zh-CN"
 	}
 	c.Set(constant.HeaderLang, lang)
+}
+
+// 记录请求
+func readReq(c *gin.Context, traceID string) error {
+	if c.Request.Method == http.MethodGet {
+		// 收集日志
+		return nil
+	}
+	reqBts := []byte("{}")
+	reqBts, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		log.ErrorTF(traceID, "OpenMiddleWare Start. ReadReq Fail: %s", err)
+		c.Set(constant.RespBody, resp.SysErr)
+		return err
+	}
+	// 写会body
+	bodyGo := ioutil.NopCloser(bytes.NewBuffer(reqBts))
+	c.Request.Body = bodyGo
+	log.InfoTF(traceID, "OpenMiddleWare Start. ReqBody: %s", reqBts)
+	return nil
 }
 
 // 处理业务响应

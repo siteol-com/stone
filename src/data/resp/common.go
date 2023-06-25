@@ -28,6 +28,11 @@ func Success(data interface{}) ResBody {
 	return jsonResult("200", "", data)
 }
 
+// SuccessWithCode Json数据返回
+func SuccessWithCode(code string, data interface{}) ResBody {
+	return jsonResult(code, "", data)
+}
+
 // Validate Json校验返回400（已翻译）
 func Validate(err error) ResBody {
 	return jsonResult("400", err.Error(), nil)

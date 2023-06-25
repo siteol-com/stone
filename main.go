@@ -58,7 +58,6 @@ func main() {
 // serviceInit 业务初始化
 func serviceInit() {
 	// 主服务进行响应码初始化
-	log.InfoF("%s", config.SysNode)
 	if config.SysNode == "APP01" {
 		err := platService.InitResponseCodeCache()
 		if err != nil {

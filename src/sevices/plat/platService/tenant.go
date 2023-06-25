@@ -23,13 +23,13 @@ func GetOpenTenant(traceID string, req *platModel.OpenTenantReq) resp.ResBody {
 	if !check {
 		return checkRes
 	}
-	// 响应安全结构体
-	return resp.Success(platModel.OpenTenantRes{
-		Name:       tenant.Name,
-		Alias:      tenant.Alias,
-		Theme:      tenant.Theme,
-		Logo:       tenant.Logo,
-		Background: tenant.Background,
+	// 响应安全结构体 租户信息获取成功
+	return resp.SuccessWithCode("2001000", platModel.OpenTenantRes{
+		Name:  tenant.Name,
+		Alias: tenant.Alias,
+		Theme: tenant.Theme,
+		Logo:  tenant.Logo,
+		Icon:  tenant.Icon,
 	})
 }
 

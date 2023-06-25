@@ -3,7 +3,7 @@ package plat
 import (
 	"github.com/gin-gonic/gin"
 	"siteOl.com/stone/server/src/data/constant"
-	"siteOl.com/stone/server/src/data/mysql/platDb"
+	"siteOl.com/stone/server/src/sevices/plat/platModel"
 )
 
 /**
@@ -16,11 +16,11 @@ import (
  */
 
 // GetLoginUser 从上下文获取登录用户授权机构体
-func GetLoginUser(c *gin.Context) *platDb.AuthUser {
+func GetLoginUser(c *gin.Context) *platModel.AuthUser {
 	obj, ok := c.Get(constant.AuthUser)
 	if ok {
-		authUser := &platDb.AuthUser{}
-		authUser = obj.(*platDb.AuthUser)
+		authUser := &platModel.AuthUser{}
+		authUser = obj.(*platModel.AuthUser)
 		return authUser
 	}
 	return nil

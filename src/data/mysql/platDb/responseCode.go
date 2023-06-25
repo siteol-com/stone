@@ -1,5 +1,7 @@
 package platDb
 
+// INSERT INTO `response_code`(`code`, `service_code`, `response_type`, `zh_cn`, `en_us`, `remark`, `mark`, `status`, `create_at`, `update_at`) VALUES ('2001000', 1, 2, '租户信息获取成功', 'En', '租户相关成功信息', 0, 1, '2023-03-03 03:33:33', '2023-03-03 03:33:33');
+
 // ResponseCode 响应码
 type ResponseCode struct {
 	ID           uint64 // 数据ID

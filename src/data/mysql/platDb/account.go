@@ -7,13 +7,19 @@ import (
 
 // Account 用户表
 type Account struct {
-	ID         uint64     // 账号ID
-	Account    string     // 账号
-	Encryption string     // 密文密码
-	SaltKey    string     // 盐值秘钥
-	PwdExpTime *time.Time // 密码超期时间（修改后的90天）
-	TenantId   uint64     // 租户ID
-	Mark       uint8      // 变更标识 1可变更 2禁止变更（除密码）
+	ID             uint64     // 账号ID
+	Account        string     // 账号
+	Encryption     string     // 密文密码
+	SaltKey        string     // 盐值秘钥
+	PwdExpTime     *time.Time // 密码超期时间（修改后的90天）
+	LastLoginTime  *time.Time //最后登陆时间
+	TenantId       uint64     // 租户ID
+	DeptId         uint64     // 部门ID
+	PermissionType uint8      // 权限类型 0全局数据 1跟随部门 2仅本部门 3本部门及子部门
+	Name           string     // 姓名（拓展信息）
+	Email          string     // 邮箱（拓展信息）
+	Phone          string     // 手机号（拓展信息）
+	Mark           uint8      // 变更标识 1可变更 2禁止变更（除密码）
 	Common
 }
 
@@ -25,6 +31,6 @@ func (t *Account) TableName() string {
 // FindOne 基于对象实施查询
 func (t *Account) FindOne() (res *Account, err error) {
 	res = new(Account)
-	err = actuator.FindOneByObject(platDb, t, res)
+	err = actuator.FindByObject(platDb, t, res)
 	return
 }

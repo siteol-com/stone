@@ -9,7 +9,7 @@ func TestAESDecrypt(t *testing.T) {
 }
 
 func TestAESEncrypt(t *testing.T) {
-	enStr, err := AESEncrypt("AdminAdminAdmin1", "KEY_SiteOL_Stone")
+	enStr, err := AESEncrypt("admin123", "mSZFrzZLYCFf1tta")
 	t.Log(enStr)
 	t.Log(err)
 }

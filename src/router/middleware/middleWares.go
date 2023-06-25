@@ -17,7 +17,12 @@ func OpenMiddleWare(c *gin.Context) {
 		returnJSON(c, "OpenMiddleWare", traceID)
 	}()
 	c.Set(constant.TraceID, traceID)
-	setLang(c) // 设置语言
+	// 设置语言
+	setLang(c)
+	// 读取请求
+	if readReq(c, traceID) != nil {
+		return
+	}
 	// 免鉴权
 	c.Next()
 }
@@ -32,7 +37,12 @@ func AuthMiddleWare(c *gin.Context) {
 		returnJSON(c, "AuthMiddleWare", traceID)
 	}()
 	c.Set(constant.TraceID, traceID)
-	setLang(c) // 设置语言
+	// 设置语言
+	setLang(c)
+	// 读取请求
+	if readReq(c, traceID) != nil {
+		return
+	}
 	// 读取鉴权信息
 	// TODO
 	c.Next()

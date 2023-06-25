@@ -6,7 +6,7 @@ type Dict struct {
 	GroupKey string // 字典分组Key
 	IntVal   uint8  // 字典值（数字型）
 	StrVal   string // 字典值（字符型）
-	Pid      uint64 // 父级字典ID 默认 0
+	Pid      uint64 // 父级字典ID 默认 1（根数据）
 	Sort     uint16 // 字典排序
 	Remark   string // 字典描述
 	Common

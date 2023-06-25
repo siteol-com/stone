@@ -12,6 +12,11 @@ func TraceID() string {
 	return RandStr(8)
 }
 
+// SaltKey 生成一个16位的随机盐值
+func SaltKey() string {
+	return RandStr(16)
+}
+
 // RandStr 生成指定位数的随机字符
 func RandStr(length int) string {
 	bytes := []byte(baseStr)
