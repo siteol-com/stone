@@ -83,302 +83,302 @@ func IsLevelEnabled(level string) bool {
 
 // 打印日志
 
-func Trace(m ...interface{}) {
+func Trace(m ...any) {
 	std.TPrintF(globalLevel, TraceLevel, "", "", m...)
 }
 
-func Debug(m ...interface{}) {
+func Debug(m ...any) {
 	std.TPrintF(globalLevel, DebugLevel, "", "", m...)
 }
 
-func Info(m ...interface{}) {
+func Info(m ...any) {
 	std.TPrintF(globalLevel, InfoLevel, "", "", m...)
 }
 
-func Warn(m ...interface{}) {
+func Warn(m ...any) {
 	std.TPrintF(globalLevel, WarnLevel, "", "", m...)
 }
 
-func Error(m ...interface{}) {
+func Error(m ...any) {
 	std.TPrintF(globalLevel, ErrorLevel, "", "", m...)
 }
 
-func Panic(m ...interface{}) {
+func Panic(m ...any) {
 	std.TPrintF(globalLevel, PanicLevel, "", "", m...)
 }
 
-func Fatal(m ...interface{}) {
+func Fatal(m ...any) {
 	std.TPrintF(globalLevel, FatalLevel, "", "", m...)
 }
 
-func Print(m ...interface{}) {
+func Print(m ...any) {
 	std.TPrintF(globalLevel, PrintLevel, "", "", m...)
 }
 
-func Stack(m ...interface{}) {
+func Stack(m ...any) {
 	std.TPrintF(globalLevel, StackLevel, "", "", m...)
 }
 
 // 按一定格式打印日志
 
-func TraceF(format string, m ...interface{}) {
+func TraceF(format string, m ...any) {
 	std.TPrintF(globalLevel, TraceLevel, "", format, m...)
 }
 
-func DebugF(format string, m ...interface{}) {
+func DebugF(format string, m ...any) {
 	std.TPrintF(globalLevel, DebugLevel, "", format, m...)
 }
 
-func InfoF(format string, m ...interface{}) {
+func InfoF(format string, m ...any) {
 	std.TPrintF(globalLevel, InfoLevel, "", format, m...)
 }
-func WarnF(format string, m ...interface{}) {
+func WarnF(format string, m ...any) {
 	std.TPrintF(globalLevel, WarnLevel, "", format, m...)
 }
 
-func ErrorF(format string, m ...interface{}) {
+func ErrorF(format string, m ...any) {
 	std.TPrintF(globalLevel, ErrorLevel, "", format, m...)
 }
 
-func PanicF(format string, m ...interface{}) {
+func PanicF(format string, m ...any) {
 	std.TPrintF(globalLevel, PanicLevel, "", format, m...)
 }
 
-func FatalF(format string, m ...interface{}) {
+func FatalF(format string, m ...any) {
 	std.TPrintF(globalLevel, FatalLevel, "", format, m...)
 }
 
-func PrintF(format string, m ...interface{}) {
+func PrintF(format string, m ...any) {
 	std.TPrintF(globalLevel, PrintLevel, "", format, m...)
 }
 
-func StackF(format string, m ...interface{}) {
+func StackF(format string, m ...any) {
 	std.TPrintF(globalLevel, StackLevel, "", format, m...)
 }
 
 // 打印日志时带上 tag
 
-func TTrace(tag string, m ...interface{}) {
+func TTrace(tag string, m ...any) {
 	std.TPrintF(globalLevel, TraceLevel, tag, "", m...)
 }
 
-func TDebug(tag string, m ...interface{}) {
+func TDebug(tag string, m ...any) {
 	std.TPrintF(globalLevel, DebugLevel, tag, "", m...)
 }
 
-func TInfo(tag string, m ...interface{}) {
+func TInfo(tag string, m ...any) {
 	std.TPrintF(globalLevel, InfoLevel, tag, "", m...)
 }
 
-func TWarn(tag string, m ...interface{}) {
+func TWarn(tag string, m ...any) {
 	std.TPrintF(globalLevel, WarnLevel, tag, "", m...)
 }
 
-func TError(tag string, m ...interface{}) {
+func TError(tag string, m ...any) {
 	std.TPrintF(globalLevel, ErrorLevel, tag, "", m...)
 }
 
-func TPanic(tag string, m ...interface{}) {
+func TPanic(tag string, m ...any) {
 	std.TPrintF(globalLevel, PanicLevel, tag, "", m...)
 }
 
-func TFatal(tag string, m ...interface{}) {
+func TFatal(tag string, m ...any) {
 	std.TPrintF(globalLevel, FatalLevel, tag, "", m...)
 }
 
-func TPrint(tag string, m ...interface{}) {
+func TPrint(tag string, m ...any) {
 	std.TPrintF(globalLevel, PrintLevel, tag, "", m...)
 }
 
-func TStack(tag string, m ...interface{}) {
+func TStack(tag string, m ...any) {
 	std.TPrintF(globalLevel, StackLevel, tag, "", m...)
 }
 
 // 按一定格式打印日志，并在打印日志时带上 tag
 
-func TTraceF(tag string, format string, m ...interface{}) {
+func TTraceF(tag string, format string, m ...any) {
 	std.TPrintF(globalLevel, TraceLevel, tag, format, m...)
 }
 
-func TDebugF(tag string, format string, m ...interface{}) {
+func TDebugF(tag string, format string, m ...any) {
 	std.TPrintF(globalLevel, DebugLevel, tag, format, m...)
 }
 
-func TInfoF(tag string, format string, m ...interface{}) {
+func TInfoF(tag string, format string, m ...any) {
 	std.TPrintF(globalLevel, InfoLevel, tag, format, m...)
 }
 
-func TWarnF(tag string, format string, m ...interface{}) {
+func TWarnF(tag string, format string, m ...any) {
 	std.TPrintF(globalLevel, WarnLevel, tag, format, m...)
 }
 
-func TErrorF(tag string, format string, m ...interface{}) {
+func TErrorF(tag string, format string, m ...any) {
 	std.TPrintF(globalLevel, ErrorLevel, tag, format, m...)
 }
 
-func TPanicF(tag string, format string, m ...interface{}) {
+func TPanicF(tag string, format string, m ...any) {
 	std.TPrintF(globalLevel, PanicLevel, tag, format, m...)
 }
 
-func TFatalF(tag string, format string, m ...interface{}) {
+func TFatalF(tag string, format string, m ...any) {
 	std.TPrintF(globalLevel, FatalLevel, tag, format, m...)
 }
 
-func TPrintF(tag string, format string, m ...interface{}) {
+func TPrintF(tag string, format string, m ...any) {
 	std.TPrintF(globalLevel, PrintLevel, tag, format, m...)
 }
 
-func TStackF(tag string, format string, m ...interface{}) {
+func TStackF(tag string, format string, m ...any) {
 	std.TPrintF(globalLevel, StackLevel, tag, format, m...)
 }
 
 // 打印日志
 
-func TraceT(traceID string, m ...interface{}) {
+func TraceT(traceID string, m ...any) {
 	std.TPrintTF(globalLevel, TraceLevel, "", traceID, "", m...)
 }
 
-func DebugT(traceID string, m ...interface{}) {
+func DebugT(traceID string, m ...any) {
 	std.TPrintTF(globalLevel, DebugLevel, "", traceID, "", m...)
 }
 
-func InfoT(traceID string, m ...interface{}) {
+func InfoT(traceID string, m ...any) {
 	std.TPrintTF(globalLevel, InfoLevel, "", traceID, "", m...)
 }
 
-func WarnT(traceID string, m ...interface{}) {
+func WarnT(traceID string, m ...any) {
 	std.TPrintTF(globalLevel, WarnLevel, "", traceID, "", m...)
 }
 
-func ErrorT(traceID string, m ...interface{}) {
+func ErrorT(traceID string, m ...any) {
 	std.TPrintTF(globalLevel, ErrorLevel, "", traceID, "", m...)
 }
 
-func PanicT(traceID string, m ...interface{}) {
+func PanicT(traceID string, m ...any) {
 	std.TPrintTF(globalLevel, PanicLevel, "", traceID, "", m...)
 }
 
-func FatalT(traceID string, m ...interface{}) {
+func FatalT(traceID string, m ...any) {
 	std.TPrintTF(globalLevel, FatalLevel, "", traceID, "", m...)
 }
 
-func PrintT(traceID string, m ...interface{}) {
+func PrintT(traceID string, m ...any) {
 	std.TPrintTF(globalLevel, PrintLevel, "", traceID, "", m...)
 }
 
-func StackT(traceID string, m ...interface{}) {
+func StackT(traceID string, m ...any) {
 	std.TPrintTF(globalLevel, StackLevel, "", traceID, "", m...)
 }
 
 // 按一定格式打印日志
 
-func TraceTF(traceID, format string, m ...interface{}) {
+func TraceTF(traceID, format string, m ...any) {
 	std.TPrintTF(globalLevel, TraceLevel, "", traceID, format, m...)
 }
 
-func DebugTF(traceID, format string, m ...interface{}) {
+func DebugTF(traceID, format string, m ...any) {
 	std.TPrintTF(globalLevel, DebugLevel, "", traceID, format, m...)
 }
 
-func InfoTF(traceID, format string, m ...interface{}) {
+func InfoTF(traceID, format string, m ...any) {
 	std.TPrintTF(globalLevel, InfoLevel, "", traceID, format, m...)
 }
-func WarnTF(traceID, format string, m ...interface{}) {
+func WarnTF(traceID, format string, m ...any) {
 	std.TPrintTF(globalLevel, WarnLevel, "", traceID, format, m...)
 }
 
-func ErrorTF(traceID, format string, m ...interface{}) {
+func ErrorTF(traceID, format string, m ...any) {
 	std.TPrintTF(globalLevel, ErrorLevel, "", traceID, format, m...)
 }
 
-func PanicTF(traceID, format string, m ...interface{}) {
+func PanicTF(traceID, format string, m ...any) {
 	std.TPrintTF(globalLevel, PanicLevel, "", traceID, format, m...)
 }
 
-func FatalTF(traceID, format string, m ...interface{}) {
+func FatalTF(traceID, format string, m ...any) {
 	std.TPrintTF(globalLevel, FatalLevel, "", traceID, format, m...)
 }
 
-func PrintTF(traceID, format string, m ...interface{}) {
+func PrintTF(traceID, format string, m ...any) {
 	std.TPrintTF(globalLevel, PrintLevel, "", traceID, format, m...)
 }
 
-func StackTF(traceID, format string, m ...interface{}) {
+func StackTF(traceID, format string, m ...any) {
 	std.TPrintTF(globalLevel, StackLevel, "", traceID, format, m...)
 }
 
 // 打印日志时带上 tag
 
-func TTraceT(traceID, tag string, m ...interface{}) {
+func TTraceT(traceID, tag string, m ...any) {
 	std.TPrintTF(globalLevel, TraceLevel, tag, traceID, "", m...)
 }
 
-func TDebugT(traceID, tag string, m ...interface{}) {
+func TDebugT(traceID, tag string, m ...any) {
 	std.TPrintTF(globalLevel, DebugLevel, tag, traceID, "", m...)
 }
 
-func TInfoT(traceID, tag string, m ...interface{}) {
+func TInfoT(traceID, tag string, m ...any) {
 	std.TPrintTF(globalLevel, InfoLevel, tag, traceID, "", m...)
 }
 
-func TWarnT(traceID, tag string, m ...interface{}) {
+func TWarnT(traceID, tag string, m ...any) {
 	std.TPrintTF(globalLevel, WarnLevel, tag, traceID, "", m...)
 }
 
-func TErrorT(traceID, tag string, m ...interface{}) {
+func TErrorT(traceID, tag string, m ...any) {
 	std.TPrintTF(globalLevel, ErrorLevel, tag, traceID, "", m...)
 }
 
-func TPanicT(traceID, tag string, m ...interface{}) {
+func TPanicT(traceID, tag string, m ...any) {
 	std.TPrintTF(globalLevel, PanicLevel, tag, traceID, "", m...)
 }
 
-func TFatalT(traceID, tag string, m ...interface{}) {
+func TFatalT(traceID, tag string, m ...any) {
 	std.TPrintTF(globalLevel, FatalLevel, tag, traceID, "", m...)
 }
 
-func TPrintT(traceID, tag string, m ...interface{}) {
+func TPrintT(traceID, tag string, m ...any) {
 	std.TPrintTF(globalLevel, PrintLevel, tag, traceID, "", m...)
 }
 
-func TStackT(traceID, tag string, m ...interface{}) {
+func TStackT(traceID, tag string, m ...any) {
 	std.TPrintTF(globalLevel, StackLevel, tag, traceID, "", m...)
 }
 
 // 按一定格式打印日志，并在打印日志时带上 tag
 
-func TTraceTF(traceID, tag string, format string, m ...interface{}) {
+func TTraceTF(traceID, tag string, format string, m ...any) {
 	std.TPrintTF(globalLevel, TraceLevel, tag, traceID, format, m...)
 }
 
-func TDebugTF(traceID, tag string, format string, m ...interface{}) {
+func TDebugTF(traceID, tag string, format string, m ...any) {
 	std.TPrintTF(globalLevel, DebugLevel, tag, traceID, format, m...)
 }
 
-func TInfoTF(traceID, tag string, format string, m ...interface{}) {
+func TInfoTF(traceID, tag string, format string, m ...any) {
 	std.TPrintTF(globalLevel, InfoLevel, tag, traceID, format, m...)
 }
 
-func TWarnTF(traceID, tag string, format string, m ...interface{}) {
+func TWarnTF(traceID, tag string, format string, m ...any) {
 	std.TPrintTF(globalLevel, WarnLevel, tag, traceID, format, m...)
 }
 
-func TErrorTF(traceID, tag string, format string, m ...interface{}) {
+func TErrorTF(traceID, tag string, format string, m ...any) {
 	std.TPrintTF(globalLevel, ErrorLevel, tag, traceID, format, m...)
 }
 
-func TPanicTF(traceID, tag string, format string, m ...interface{}) {
+func TPanicTF(traceID, tag string, format string, m ...any) {
 	std.TPrintTF(globalLevel, PanicLevel, tag, traceID, format, m...)
 }
 
-func TFatalTF(traceID, tag string, format string, m ...interface{}) {
+func TFatalTF(traceID, tag string, format string, m ...any) {
 	std.TPrintTF(globalLevel, FatalLevel, tag, traceID, format, m...)
 }
 
-func TPrintTF(traceID, tag string, format string, m ...interface{}) {
+func TPrintTF(traceID, tag string, format string, m ...any) {
 	std.TPrintTF(globalLevel, PrintLevel, tag, traceID, format, m...)
 }
 
-func TStackTF(traceID, tag string, format string, m ...interface{}) {
+func TStackTF(traceID, tag string, format string, m ...any) {
 	std.TPrintTF(globalLevel, StackLevel, tag, traceID, format, m...)
 }

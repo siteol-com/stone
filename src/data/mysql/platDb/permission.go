@@ -1,5 +1,10 @@
 package platDb
 
+import (
+	"gorm.io/gorm"
+	"siteOl.com/stone/server/src/data/mysql/actuator"
+)
+
 // Permission 权限表
 type Permission struct {
 	ID     uint64 // 默认数据ID
@@ -12,13 +17,21 @@ type Permission struct {
 	Common
 }
 
+// PermissionTable 权限泛型构造器
+var PermissionTable actuator.Table[Permission]
+
+// DataBase 实现指定数据库
+func (t Permission) DataBase() *gorm.DB {
+	return platDb
+}
+
 // TableName 实现自定义表名
-func (t *Permission) TableName() string {
+func (t Permission) TableName() string {
 	return "permission"
 }
 
 // FindByIds 根据IDS获取权限别名
-func (t *Permission) FindByIds(ids []uint64) (res []*Permission, err error) {
+func (t Permission) FindByIds(ids []uint64) (res []*Permission, err error) {
 	r := platDb.Where("id IN ?", ids).Find(&res)
 	err = r.Error
 	return

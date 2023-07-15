@@ -13,7 +13,7 @@ var platDb *gorm.DB
 // InitPlatFromDb 初始化平台数据库
 func InitPlatFromDb() {
 	// 采用默认配置打开数据可
-	db, err := gorm.Open(mysql.Open(config.RunConfig.MySQL.Plat), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(config.JsonConfig.MySQL.Plat), &gorm.Config{})
 	if err != nil {
 		log.FatalF("Open PlatDb Fail . Err Is : %s", err)
 		return
@@ -24,7 +24,7 @@ func InitPlatFromDb() {
 
 // Common 平台通用信息体
 type Common struct {
-	Status   uint8      // 状态 1正常 2锁定 3封存
+	Status   string     // 状态 0正常 1锁定 2封存
 	CreateAt *time.Time // 创建时间
 	UpdateAt *time.Time // 更新时间
 }

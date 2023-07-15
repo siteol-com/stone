@@ -50,7 +50,7 @@ func (s *Standard) Write(p []byte) (n int, err error) {
 }
 
 // TPrintF 格式化打印日志
-func (s *Standard) TPrintF(v, l levelIndex, tag string, format string, m ...interface{}) {
+func (s *Standard) TPrintF(v, l levelIndex, tag string, format string, m ...any) {
 	if v > l {
 		return
 	}
@@ -120,7 +120,7 @@ func (s *Standard) TPrintF(v, l levelIndex, tag string, format string, m ...inte
 }
 
 // TPrintTF 格式化打印日志
-func (s *Standard) TPrintTF(v, l levelIndex, tag string, traceID string, format string, m ...interface{}) {
+func (s *Standard) TPrintTF(v, l levelIndex, tag string, traceID string, format string, m ...any) {
 	if v > l {
 		return
 	}
