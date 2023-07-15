@@ -30,7 +30,7 @@ func InitResponseCodeCache() (err error) {
 		resCodeCacheMap[res.Code] = langMap
 	}
 	// 写入缓存 无超期
-	err = redis.Set(constant.TransLangCacheKey, resCodeCacheMap, 0)
+	err = redis.Set(constant.CacheKeyTransLang, resCodeCacheMap, 0)
 	if err == nil {
 		log.InfoF("InitResponseCodeCache Success .")
 	}

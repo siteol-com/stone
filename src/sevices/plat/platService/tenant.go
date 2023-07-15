@@ -12,14 +12,13 @@ import (
 // GetOpenTenant 获取租户信息（开放），失败不返回具体信息
 func GetOpenTenant(traceID string, req *platModel.OpenTenantReq) resp.ResBody {
 	// 获取租户查询结构体
-	tenantReq := &platDb.Tenant{Alias: req.TenantAlias}
-	tenant, err := tenantReq.FindOne()
+	tenant, err := platDb.TenantTable.FindOneByObject(&platDb.Tenant{Alias: req.TenantAlias})
 	if err != nil {
 		log.ErrorTF(traceID, "GetOpenTenant Fail . Err is %v", err)
 		return resp.Fail("5001000") // 租户查询失败
 	}
 	// 检查租户，检查不通过
-	check, checkRes := CheckTenant(tenant)
+	check, checkRes := CheckTenant(&tenant)
 	if !check {
 		return checkRes
 	}

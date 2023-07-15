@@ -8,7 +8,7 @@ import (
 )
 
 // InsertLoginRecord 插入一条登录记录
-func InsertLoginRecord(accountId, tenantId uint64, loginType uint8, now time.Time, token, traceID string) {
+func InsertLoginRecord(accountId, tenantId uint64, loginType string, now time.Time, token, traceID string) {
 	insert := &platDb.LoginRecord{
 		AccountId: accountId,
 		TenantId:  tenantId,
@@ -21,7 +21,7 @@ func InsertLoginRecord(accountId, tenantId uint64, loginType uint8, now time.Tim
 			UpdateAt: &now,
 		},
 	}
-	_, err := insert.InsertByObj()
+	err := platDb.LoginRecordTable.InsertOne(insert)
 	if err != nil {
 		// 登陆数据插入异常不影响登陆
 		log.ErrorTF(traceID, "InsertLoginRecord Fail . AccountId is %d . Err is %v", accountId, err)

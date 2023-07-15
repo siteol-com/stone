@@ -30,3 +30,30 @@ func getPermissionRouters(permissionIds []uint64, traceID string) (routerUrls []
 	}
 	return
 }
+
+// 移除路由绑定的权限关系，涉及权限异步反馈（管理中台暂不考虑事务）
+func notifyChangeByRouter(id uint64, remove bool, traceID string) (err error) {
+	// 获取路由绑定权限ID
+	permissions, err := platDb.PermissionRouterTable.FindByObject(&platDb.PermissionRouter{RouterId: id})
+	if err != nil {
+		log.ErrorTF(traceID, "FindPermission By RouterId %d Fail . Err Is : %v", id, err)
+		return
+	}
+	// 遍历权限，用于回溯影响的账号
+	if len(permissions) > 0 {
+		dataIds := make([]uint64, len(permissions))
+		permissionIds := make([]uint64, len(permissions))
+		for i, item := range permissions {
+			permissionIds[i] = item.PermissionId
+			dataIds[i] = item.ID
+		}
+		// 如果需要移除关系（通过ID移除）
+		if remove {
+			err = platDb.PermissionRouterTable.DeleteByIds(dataIds)
+			log.ErrorTF(traceID, "DeleteRouterPermission By RouterId %d Fail . Err Is : %v", id, err)
+		}
+		// 异步通知受影响的Token失效（上层不涉及数据删除等行为）
+		go notifyChangeByPermissionIds(permissionIds, false, traceID)
+	}
+	return
+}

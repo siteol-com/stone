@@ -13,7 +13,7 @@ import (
  * 账号控制器
  *
  *
- * @author 米虫@mebugs.com
+ * @author 米虫丨www.mebugs.com
  * @since 2023-03-08
  */
 

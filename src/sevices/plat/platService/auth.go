@@ -15,26 +15,24 @@ import (
 // AuthLogin 账号登录
 func AuthLogin(traceID string, req *platModel.AuthLoginReq) resp.ResBody {
 	// 查询租户
-	tenantReq := &platDb.Tenant{Alias: req.TenantAlias}
-	tenant, err := tenantReq.FindOne()
+	tenant, err := platDb.TenantTable.FindOneByObject(&platDb.Tenant{Alias: req.TenantAlias})
 	if err != nil {
 		log.ErrorTF(traceID, "AuthLogin GetTenant Fail . Err is %v", err)
 		return resp.Fail("5001000") // 租户查询失败
 	}
 	// 检查租户，检查不通过
-	check, checkRes := CheckTenant(tenant)
+	check, checkRes := CheckTenant(&tenant)
 	if !check {
 		return checkRes
 	}
 	// 查询账号
-	accountReq := &platDb.Account{Account: req.Account, TenantId: tenant.ID}
-	account, err := accountReq.FindOne()
+	account, err := platDb.AccountTable.FindOneByObject(&platDb.Account{Account: req.Account, TenantId: tenant.ID})
 	if err != nil {
 		log.ErrorTF(traceID, "AuthLogin GetAccount Fail . Err is %v", err)
 		return resp.Fail("5002000") // 混淆错误：账号或密码错误
 	}
 	// 检查账号，检查不通过
-	check, checkRes = checkAccount(account)
+	check, checkRes = checkAccount(&account)
 	if !check {
 		return checkRes
 	}
@@ -52,7 +50,7 @@ func AuthLogin(traceID string, req *platModel.AuthLoginReq) resp.ResBody {
 	InsertLoginRecord(account.ID, tenant.ID, constant.LoginTypeAuth, now, token, traceID)
 	// TODO 踢出超限的登陆数据
 	// 初始化登陆权限（塞入Redis）
-	setAuthUser(account, token, traceID)
+	setAuthUser(&account, token, traceID)
 	// 账号登陆成功
 	return resp.SuccessWithCode("2002000", platModel.AuthLoginRes{Token: token})
 }

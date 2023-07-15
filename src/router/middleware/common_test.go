@@ -24,8 +24,8 @@ func Split(str string, t *testing.T) {
 	strS := strings.Split(str, "{{")
 	for _, i := range strS {
 		if strings.Index(i, "}}") > -1 {
-			runStr := i[:strings.Index(i, "}}")]
-			t.Log(runStr)
+			TableStr := i[:strings.Index(i, "}}")]
+			t.Log(TableStr)
 		}
 	}
 }

@@ -19,8 +19,8 @@ func RecoverWrap(inF func()) func() {
 	}
 }
 
-// ToErr 将 interface{} 类型, 转换为 error 类型
-func ToErr(r interface{}) error {
+// ToErr 将 any 类型, 转换为 error 类型
+func ToErr(r any) error {
 	var err error
 	if r != nil {
 		switch t := r.(type) {

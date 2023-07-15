@@ -8,10 +8,28 @@ import (
 
 // PlatFormRouter 平台业务路由
 func PlatFormRouter(router *gin.Engine) {
-	PlatFormRouter := router.Group("/plat", middleware.AuthMiddleWare)
+	platRouter := router.Group("/plat", middleware.AuthMiddleWare)
 	{
 		// 账号相关
-		PlatFormRouter.POST("/accounts/add", platHandler.AddAccount)
+		accountRouter := platRouter.Group("/account")
+		{
+			accountRouter.POST("/add", platHandler.AddAccount)
+		}
 
+		// 路由相关
+		routerRouter := platRouter.Group("/router")
+		{
+			routerRouter.POST("/page", platHandler.PageRouter)
+			routerRouter.POST("/add", platHandler.AddRouter)
+			routerRouter.POST("/get", platHandler.GetRouter)
+			routerRouter.POST("/edit", platHandler.EditRouter)
+			routerRouter.POST("/del", platHandler.DelRouter)
+		}
+
+		// 字典相关
+		dictRouter := platRouter.Group("/dict")
+		{
+			dictRouter.POST("/list", platHandler.ListDict)
+		}
 	}
 }

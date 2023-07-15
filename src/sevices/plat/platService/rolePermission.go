@@ -37,3 +37,15 @@ func getRolePermissions(roleIds []uint64, traceID string) (permissionIds []uint6
 	}
 	return
 }
+
+// TODO 根据权限ID通知账号权限变动
+// 触发时机：权限编辑（路由变动）、权限删除、路由编辑（URL、类型）、路由删除
+func notifyChangeByPermissionIds(permissionIds []uint64, remove bool, traceID string) {
+
+	// TODO 取的角色
+
+	// TODO 取的账号
+
+	// TODO 取得登陆Token（通知刷新）
+
+}

@@ -11,7 +11,7 @@ import (
 )
 
 // Readable 请求数据解析和校验错误返回
-func Readable(c *gin.Context, req interface{}) (error, interface{}) {
+func Readable(c *gin.Context, req any) (error, any) {
 	traceID := c.GetString(constant.TraceID)
 	var err error
 	// 根据请求采用不同绑定
@@ -30,7 +30,7 @@ func Readable(c *gin.Context, req interface{}) (error, interface{}) {
 	return nil, req
 }
 
-//  解析异常，如果是校验异常，返回自定义结果
+// 解析异常，如果是校验异常，返回自定义结果
 func readableError(err error, lang, traceID string) error {
 	// 翻译校验错误
 	if errs, ok := err.(validator.ValidationErrors); ok {

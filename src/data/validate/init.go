@@ -64,7 +64,7 @@ func transInit() (validate *validator.Validate, err error) {
 }
 
 // 获取函数名
-func fnName(i interface{}) string {
+func fnName(i any) string {
 	fullName := runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
 	dotIndex := strings.LastIndex(fullName, ".")
 	return fullName[dotIndex+1:]

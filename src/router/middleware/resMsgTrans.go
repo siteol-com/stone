@@ -10,10 +10,10 @@ import (
 	"strings"
 )
 
-// 执行Msg翻译
-func runMsgTrans(res resp.ResBody, lang, traceId string) string {
+// TableMsgTrans 执行Msg翻译
+func TableMsgTrans(res resp.ResBody, lang, traceId string) string {
 	// 获取翻译缓存
-	tranStr, err := redis.Get(constant.TransLangCacheKey)
+	tranStr, err := redis.Get(constant.CacheKeyTransLang)
 	if err != nil {
 		log.ErrorTF(traceId, "GetTransLangCacheMap Fail . Err Is : %v", err)
 		// 出错不翻译
@@ -34,7 +34,7 @@ func runMsgTrans(res resp.ResBody, lang, traceId string) string {
 		if lok {
 			// 检查是否有变量
 			if strings.Index(langTemple, "}}") > -1 {
-				return runValReplace(langTemple, res.Data)
+				return TableValReplace(langTemple, res.Data)
 			} else {
 				return langTemple
 			}
@@ -45,7 +45,7 @@ func runMsgTrans(res resp.ResBody, lang, traceId string) string {
 }
 
 // 执行变量替换
-func runValReplace(temple string, data interface{}) string {
+func TableValReplace(temple string, data any) string {
 	if data == nil {
 		return temple
 	}
@@ -53,7 +53,7 @@ func runValReplace(temple string, data interface{}) string {
 	if err != nil {
 		return temple
 	}
-	dataMap := make(map[string]interface{})
+	dataMap := make(map[string]any)
 	err = json.Unmarshal([]byte(dataStr), &dataMap)
 	if err != nil {
 		return temple

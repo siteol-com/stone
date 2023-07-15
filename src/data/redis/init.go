@@ -14,9 +14,9 @@ var cluster *redis.Client
 func Init() {
 	// redis
 	cluster = redis.NewClient(&redis.Options{
-		Addr:     config.RunConfig.Redis.Addr,
-		DB:       config.RunConfig.Redis.DB,
-		Password: config.RunConfig.Redis.Password,
+		Addr:     config.JsonConfig.Redis.Addr,
+		DB:       config.JsonConfig.Redis.DB,
+		Password: config.JsonConfig.Redis.Password,
 	})
 	err := cluster.Ping().Err()
 	if err != nil {

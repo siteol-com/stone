@@ -53,7 +53,7 @@ func returnJSON(c *gin.Context, middlewareName, traceID string) {
 }
 
 // 执行响应码 => 响应文言 翻译
-func returnMsgTrans(respBody interface{}, c *gin.Context, middlewareName, traceID string) {
+func returnMsgTrans(respBody any, c *gin.Context, middlewareName, traceID string) {
 	// 类型回转
 	res, ok := respBody.(resp.ResBody)
 	if !ok {
@@ -63,7 +63,7 @@ func returnMsgTrans(respBody interface{}, c *gin.Context, middlewareName, traceI
 		// 非400错误执行翻译
 		if res.Code != constant.RespValidateErrCode {
 			// 执行翻译
-			res.Msg = runMsgTrans(res, c.GetString(constant.HeaderLang), c.GetString(constant.TraceID))
+			res.Msg = TableMsgTrans(res, c.GetString(constant.HeaderLang), c.GetString(constant.TraceID))
 		}
 	}
 	// JSON序列化

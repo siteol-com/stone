@@ -29,12 +29,12 @@ func main() {
 	serviceInit()
 	// 初始化路由
 	router := router.NewRouter()
-	httpServer := &http.Server{Addr: config.RunConfig.Server.Port, Handler: router}
+	httpServer := &http.Server{Addr: config.JsonConfig.Server.Port, Handler: router}
 	// 启用HTTP服务 - 注册自定义路由
 	go comm.RecoverWrap(func() {
-		log.InfoF("Server Listening on port %s", config.RunConfig.Server.Port)
+		log.InfoF("Server Listening on port %s", config.JsonConfig.Server.Port)
 		if err := httpServer.ListenAndServe(); err != nil {
-			log.ErrorF("Server Listening on port %s . Err %v", config.RunConfig.Server.Port, err)
+			log.ErrorF("Server Listening on port %s . Err %v", config.JsonConfig.Server.Port, err)
 			os.Exit(1)
 		}
 	})()

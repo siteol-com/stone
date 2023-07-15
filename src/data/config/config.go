@@ -8,7 +8,7 @@ import (
 	"siteOl.com/stone/server/src/utils/log"
 )
 
-var RunConfig *Config
+var JsonConfig *Config
 
 // Config 配置对象
 type Config struct {
@@ -39,22 +39,22 @@ type Redis struct {
 
 // 配置初始化
 func init() {
-	SetEnv("server")                         // 初始化环境变量
-	ReadConfig()                             // 读取
-	log.SetLevel(RunConfig.Server.LogLevel)  // 日志等级
-	log.SetAutoSplit(log.CronDaily)          // 日志切割
-	log.SetAppRoot(RunConfig.Server.LogRoot) // 日志深度(2表示上级../logs/）
+	SetEnv("server")                          // 初始化环境变量
+	ReadConfig()                              // 读取
+	log.SetLevel(JsonConfig.Server.LogLevel)  // 日志等级
+	log.SetAutoSplit(log.CronDaily)           // 日志切割
+	log.SetAppRoot(JsonConfig.Server.LogRoot) // 日志深度(2表示上级../logs/）
 }
 
 // ReadConfig 启动读取配置文件
 func ReadConfig() {
-	RunConfig = &Config{}
+	JsonConfig = &Config{}
 	filePath := fmt.Sprintf("%s/config/config_%s.json", WorkDir, SysEnv)
 	file, _ := os.Open(filePath)
 	defer file.Close()
 	decoder := json.NewDecoder(file)
 	for decoder.More() {
-		err := decoder.Decode(RunConfig)
+		err := decoder.Decode(JsonConfig)
 		if err != nil {
 			logDef.Printf("Read %s Error: %v \n", filePath, err)
 			os.Exit(1)
