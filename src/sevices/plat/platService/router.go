@@ -49,10 +49,8 @@ func AddRouter(traceID string, req *platDb.Router) resp.ResBody {
 		log.ErrorTF(traceID, "PageRouter Fail . Err Is : %v", err)
 		return checkRouterDBErr(err)
 	}
-	// 新加的白名单路由，通知缓存生效
-	if req.Type == constant.RouterTypeWhite {
-		// 需要刷新白名单路由缓存
-	}
+	// 刷新白名单路由缓存
+	go InitWhiteRouterCache(traceID)
 	// 路由创建成功
 	return resp.SuccessWithCode("2003000", true)
 }
@@ -75,45 +73,33 @@ func EditRouter(traceID string, req *platDb.Router) resp.ResBody {
 		// 路由不存在 路由查询失败
 		return resp.Fail("5003000")
 	}
-	router, err := platDb.RouterTable.FindOneById(req.Id)
+	_, err := platDb.RouterTable.FindOneById(req.Id)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRouter By Id %d Fail . Err Is : %v", req.Id, err)
 		// 路由查询失败
 		return resp.Fail("5003000")
 	}
-	var needCache, needNotify bool
-	// 可能需要同步移除操作
-	// 当URL和类型变化时，可能涉及的操作
-	if req.Type != router.Type || req.Url != router.Url {
-		// 如果原来是授权路由
-		if router.Type == constant.RouterTypeAuth {
-			//如果变成白名单,需要刷新白名单路由缓存
-			needCache = req.Type != router.Type
-			// 路由类型变了，还需要移除权限的绑定关系
-			if needCache {
-				// 变更需要同步进行移除并通知
-				notifyChangeByRouter(req.Id, true, traceID)
-			} else {
-				// 通知账号权限变动（类型没变，URL变动只需要异步通知）
-				needNotify = true
-			}
-		} else {
-			// 原来是白名单时只需要刷新（即使变为授权路由，并没有权限绑定它）
-			needCache = true
-		}
+	// 推送关联
+	var needDel bool
+	if req.Type == constant.RouterTypeWhite {
+		// 如果修改后是白名单数据，需要尝试移除可能绑定的权限
+		needDel = true
 	}
+	// 通知权限刷新，尝试移除可能关联的权限，并可能通知账号权限变动
+	err = notifyChangeByRouter(req.Id, needDel, traceID)
+	if err != nil {
+		log.ErrorTF(traceID, "notifyChangeByRouter By Id %d Fail . Err Is : %v", req.Id, err)
+		// 移除路由权限关系失败
+		return resp.Error()
+	}
+	// 更新数据
 	err = platDb.RouterTable.UpdateOne(req)
 	if err != nil {
 		log.ErrorTF(traceID, "EditRouter By Id %d Fail . Err Is : %v", req.Id, err)
 		return checkRouterDBErr(err)
 	}
-	// 后续判定
-	if needNotify {
-		go notifyChangeByRouter(req.Id, false, traceID)
-	}
-	if needCache {
-		go InitWhiteRouterCache(traceID)
-	}
+	// 刷新白名单缓存
+	go InitWhiteRouterCache(traceID)
 	// 路由编辑成功
 	return resp.SuccessWithCode("2003001", true)
 }
@@ -126,11 +112,11 @@ func DelRouter(traceID string, req *model.IdReq) resp.ResBody {
 		// 路由查询失败
 		return resp.Fail("5003000")
 	}
-	// 通知账号权限变动（并移除绑定关系），同步移除，异步上层通知
+	// 如果删除的是授权路由，尝试移除可能关联的权限，并可能通知账号权限变动
 	if router.Type == constant.RouterTypeAuth {
 		err = notifyChangeByRouter(req.Id, true, traceID)
 		if err != nil {
-			log.ErrorTF(traceID, "RemoveRouterPermission By Id %d Fail . Err Is : %v", req.Id, err)
+			log.ErrorTF(traceID, "notifyChangeByRouter By Id %d Fail . Err Is : %v", req.Id, err)
 			// 移除路由权限关系失败
 			return resp.Error()
 		}
@@ -140,10 +126,8 @@ func DelRouter(traceID string, req *model.IdReq) resp.ResBody {
 		log.ErrorTF(traceID, "DelRouter By Id %d Fail . Err Is : %v", req.Id, err)
 		return resp.Error()
 	}
-	// 移除的是白名单路由
-	if router.Type == constant.RouterTypeWhite {
-		go InitWhiteRouterCache(traceID)
-	}
+	// 刷新白名单缓存
+	go InitWhiteRouterCache(traceID)
 	// 路由删除成功
 	return resp.SuccessWithCode("2003002", true)
 }
