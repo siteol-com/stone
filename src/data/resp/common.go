@@ -1,5 +1,7 @@
 package resp
 
+import "siteOl.com/stone/server/src/data/constant"
+
 /**
  *
  * 统一数据JSON返回结构
@@ -27,12 +29,12 @@ type ResBody struct {
 
 // Success Json数据返回
 func Success(data any) ResBody {
-	return jsonResult("200", "", data, false)
+	return jsonResult(constant.Success, "", data, false)
 }
 
 // SuccessUnPop 成功但提示前端不弹Pop
 func SuccessUnPop(data any) ResBody {
-	return jsonResult("200", "", data, true)
+	return jsonResult(constant.Success, "", data, true)
 }
 
 // SuccessWithCode Json数据返回
@@ -42,12 +44,12 @@ func SuccessWithCode(code string, data any) ResBody {
 
 // Validate Json校验返回400（已翻译）
 func Validate(err error) ResBody {
-	return jsonResult("400", err.Error(), nil, false)
+	return jsonResult(constant.ValidateFail, err.Error(), nil, false)
 }
 
 // Error Json错误返回500
 func Error() ResBody {
-	return jsonResult("500", "", nil, false)
+	return jsonResult(constant.SysFail, "", nil, false)
 }
 
 // Fail 业务失败数据（无响应体）

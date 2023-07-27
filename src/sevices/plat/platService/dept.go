@@ -38,9 +38,9 @@ func recursionDept(dept *platDb.Dept, deptIds []uint64) []uint64 {
 		return deptIds
 	}
 	// 满足先加入数组
-	deptIds = append(deptIds, dept.Id)
+	deptIds = append(deptIds, dept.ID)
 	// 查询子部门
-	childDeptList, err := platDb.DeptTable.FindByObject(&platDb.Dept{Pid: dept.Id})
+	childDeptList, err := platDb.DeptTable.FindByObject(&platDb.Dept{Pid: dept.ID})
 	// 查询出错或者不再有子部门，结束递归
 	if err != nil || len(childDeptList) < 1 {
 		return deptIds

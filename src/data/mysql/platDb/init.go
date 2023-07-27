@@ -24,7 +24,7 @@ func InitPlatFromDb() {
 
 // Common 平台通用信息体
 type Common struct {
-	Status   string     // 状态 0正常 1锁定 2封存
-	CreateAt *time.Time // 创建时间
-	UpdateAt *time.Time // 更新时间
+	Status   string     `json:"status"`   // 状态 0正常 1锁定 2封存
+	CreateAt *time.Time `json:"createAt"` // 创建时间
+	UpdateAt *time.Time `json:"updateAt"` // 更新时间
 }

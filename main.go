@@ -59,9 +59,9 @@ func main() {
 func serviceInit() {
 	// 主服务进行响应码初始化
 	if config.SysNode == "APP01" {
-		err := platService.InitResponseCodeCache()
+		err := platService.InitResponseCache("APP01-Init")
 		if err != nil {
-			log.ErrorF("InitResponseCodeCache Fail . Err is : %v", err)
+			log.ErrorF("InitResponseCache Fail . Err is : %v", err)
 			os.Exit(1)
 		}
 	}

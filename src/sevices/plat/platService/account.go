@@ -10,7 +10,7 @@ import (
 func checkAccount(account *platDb.Account) (check bool, res resp.ResBody) {
 	// 账号状态不正确
 	if account.Status != constant.StatusOpen {
-		res = resp.Fail("5002001") // 账号状态不可用
+		res = resp.Fail(constant.AccountStatusNG) // 账号状态不可用
 		return
 	}
 	// TODO 密码超期提示

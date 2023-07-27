@@ -21,9 +21,10 @@ type Dict struct {
 
 // DictGroup 字典分组
 type DictGroup struct {
-	ID   uint64 // 数据ID
-	Name string // 字典名称
-	Key  string // 字典分组Key
+	ID     uint64 // 数据ID
+	Key    string // 字典分组Key
+	Name   string // 字典名称
+	NameEn string // 字典名称
 }
 
 // DictTable 字典泛型构造器

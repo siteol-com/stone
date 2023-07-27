@@ -18,7 +18,7 @@ func AuthLogin(traceID string, req *platModel.AuthLoginReq) resp.ResBody {
 	tenant, err := platDb.TenantTable.FindOneByObject(&platDb.Tenant{Alias: req.TenantAlias})
 	if err != nil {
 		log.ErrorTF(traceID, "AuthLogin GetTenant Fail . Err is %v", err)
-		return resp.Fail("5001000") // 租户查询失败
+		return resp.Fail(constant.TenantGetNG) // 租户查询失败
 	}
 	// 检查租户，检查不通过
 	check, checkRes := CheckTenant(&tenant)
@@ -29,7 +29,7 @@ func AuthLogin(traceID string, req *platModel.AuthLoginReq) resp.ResBody {
 	account, err := platDb.AccountTable.FindOneByObject(&platDb.Account{Account: req.Account, TenantId: tenant.ID})
 	if err != nil {
 		log.ErrorTF(traceID, "AuthLogin GetAccount Fail . Err is %v", err)
-		return resp.Fail("5002000") // 混淆错误：账号或密码错误
+		return resp.Fail(constant.AccountLoginNG) // 混淆错误：账号或密码错误
 	}
 	// 检查账号，检查不通过
 	check, checkRes = checkAccount(&account)
@@ -41,7 +41,7 @@ func AuthLogin(traceID string, req *platModel.AuthLoginReq) resp.ResBody {
 	if encryptionReq != account.Encryption {
 		log.ErrorTF(traceID, "AuthLogin PasswordEncryption Wrong")
 		// TODO 密码错误上限，锁定时间
-		return resp.Fail("5002000") // 混淆错误：账号或密码错误
+		return resp.Fail(constant.AccountLoginNG) // 混淆错误：账号或密码错误
 	}
 	// 生成Token 时间戳+随机长度 = 32登陆Token
 	now := time.Now()
@@ -52,7 +52,7 @@ func AuthLogin(traceID string, req *platModel.AuthLoginReq) resp.ResBody {
 	// 初始化登陆权限（塞入Redis）
 	setAuthUser(&account, token, traceID)
 	// 账号登陆成功
-	return resp.SuccessWithCode("2002000", platModel.AuthLoginRes{Token: token})
+	return resp.SuccessWithCode(constant.AccountLoginOK, platModel.AuthLoginRes{Token: token})
 }
 
 // 设置登陆授权数据 （失败不影响登陆过）

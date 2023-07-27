@@ -25,7 +25,15 @@ func PlatFormRouter(router *gin.Engine) {
 			routerRouter.POST("/edit", platHandler.EditRouter)
 			routerRouter.POST("/del", platHandler.DelRouter)
 		}
-
+		// 响应码相关
+		responseRouter := platRouter.Group("/response")
+		{
+			responseRouter.POST("/page", platHandler.PageResponse)
+			responseRouter.POST("/add", platHandler.AddResponse)
+			responseRouter.POST("/get", platHandler.GetResponse)
+			responseRouter.POST("/edit", platHandler.EditResponse)
+			responseRouter.POST("/del", platHandler.DelResponse)
+		}
 		// 字典相关
 		dictRouter := platRouter.Group("/dict")
 		{

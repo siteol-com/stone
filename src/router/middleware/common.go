@@ -61,7 +61,7 @@ func returnMsgTrans(respBody any, c *gin.Context, middlewareName, traceID string
 		res = resp.SysErr
 	} else {
 		// 非400错误执行翻译
-		if res.Code != constant.RespValidateErrCode {
+		if res.Code != constant.ValidateFail {
 			// 执行翻译
 			res.Msg = TableMsgTrans(res, c.GetString(constant.HeaderLang), c.GetString(constant.TraceID))
 		}

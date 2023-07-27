@@ -7,7 +7,7 @@ import (
 
 // Router 路由表
 type Router struct {
-	Id          uint64 `json:"id"  binding:"numeric"`                  // 默认数据ID
+	ID          uint64 `json:"id"  binding:"numeric"`                  // 默认数据ID
 	Name        string `json:"name" binding:"required,max=32"`         // 路由名称，用于界面展示，与权限关联
 	Url         string `json:"url" binding:"required,uri,max=64"`      // 路由地址，后端访问URL 后端不再URL中携带参数，统一Post处理内容
 	ServiceCode string `json:"serviceCode" binding:"required,numeric"` // 业务编码（字典），为接口分组

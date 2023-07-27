@@ -8,8 +8,7 @@ const (
 	TraceID     = "traceID"  // 日志链路跟踪ID
 	AuthUser    = "authUser" // 授权用户对象
 
-	RespTypeJSON        = "application/json; charset=utf-8" // 固定响应格式，默认JSON
-	RespValidateErrCode = "400"                             // 固定400校验错误码
+	RespTypeJSON = "application/json; charset=utf-8" // 固定响应格式，默认JSON
 
 	StatusOpen  = "0" // 正常 启动
 	StatusLock  = "1" // 禁用 锁定 登出

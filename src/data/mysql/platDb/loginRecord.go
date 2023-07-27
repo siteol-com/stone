@@ -8,7 +8,7 @@ import (
 
 // LoginRecord 用户表
 type LoginRecord struct {
-	Id        uint64     // 默认数据ID
+	ID        uint64     // 默认数据ID
 	AccountId uint64     // 账号ID
 	TenantId  uint64     // 租户ID
 	LoginType string     // 登陆类型 1 账号登录
