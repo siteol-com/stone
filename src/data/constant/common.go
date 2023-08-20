@@ -32,8 +32,8 @@ const (
 	RouterTypeAuth  = "1" // 授权路由
 	RouterTypeWhite = "2" // 白名单路由
 
-	CacheKeyRouterWhite = ProjectName + "::WhiteRouterList"
-	CacheKeyTransLang   = ProjectName + "::TranLangMap" // 响应码翻译缓存Map的Key
+	CacheKeyRouterMap = ProjectName + "::RouterMap"
+	CacheKeyTransLang = ProjectName + "::TranLangMap" // 响应码翻译缓存Map的Key
 )
 
 // TransLangSupport 支持更多语言请添加

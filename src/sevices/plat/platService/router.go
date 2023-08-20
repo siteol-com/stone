@@ -49,8 +49,8 @@ func AddRouter(traceID string, req *platDb.Router) resp.ResBody {
 		log.ErrorTF(traceID, "PageRouter Fail . Err Is : %v", err)
 		return checkRouterDBErr(err)
 	}
-	// 刷新白名单路由缓存
-	go InitWhiteRouterCache(traceID)
+	// 刷新路由缓存
+	go InitRouterCache(traceID)
 	// 路由创建成功
 	return resp.SuccessWithCode(constant.RouteAddOK, true)
 }
@@ -73,24 +73,22 @@ func EditRouter(traceID string, req *platDb.Router) resp.ResBody {
 		// 路由不存在 路由查询失败
 		return resp.Fail(constant.RouteGetNG)
 	}
-	_, err := platDb.RouterTable.FindOneById(req.ID)
+	router, err := platDb.RouterTable.FindOneById(req.ID)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRouter By Id %d Fail . Err Is : %v", req.ID, err)
 		// 路由查询失败
 		return resp.Fail(constant.RouteGetNG)
 	}
-	// 推送关联
-	var needDel bool
-	if req.Type == constant.RouterTypeWhite {
-		// 如果修改后是白名单数据，需要尝试移除可能绑定的权限
-		needDel = true
-	}
-	// 通知权限刷新，尝试移除可能关联的权限，并可能通知账号权限变动
-	err = notifyChangeByRouter(req.ID, needDel, traceID)
-	if err != nil {
-		log.ErrorTF(traceID, "notifyChangeByRouter By Id %d Fail . Err Is : %v", req.ID, err)
-		// 移除路由权限关系失败
-		return resp.SysErr
+	// 更新信息（类型禁止修改）
+	req.Type = router.Type
+	// 通知权限刷新，当URL变化时，并可能通知账号权限变动
+	if req.Type == constant.RouterTypeAuth && req.Url != router.Url {
+		err = notifyChangeByRouter(req.ID, false, traceID)
+		if err != nil {
+			log.ErrorTF(traceID, "notifyChangeByRouter By Id %d Fail . Err Is : %v", req.ID, err)
+			// 移除路由权限关系失败
+			return resp.SysErr
+		}
 	}
 	// 更新数据
 	err = platDb.RouterTable.UpdateOne(req)
@@ -99,7 +97,7 @@ func EditRouter(traceID string, req *platDb.Router) resp.ResBody {
 		return checkRouterDBErr(err)
 	}
 	// 刷新白名单缓存
-	go InitWhiteRouterCache(traceID)
+	go InitRouterCache(traceID)
 	// 路由编辑成功
 	return resp.SuccessWithCode(constant.RouteEditOK, true)
 }
@@ -127,7 +125,7 @@ func DelRouter(traceID string, req *model.IdReq) resp.ResBody {
 		return resp.SysErr
 	}
 	// 刷新白名单缓存
-	go InitWhiteRouterCache(traceID)
+	go InitRouterCache(traceID)
 	// 路由删除成功
 	return resp.SuccessWithCode(constant.RouteDelOK, true)
 }
@@ -149,20 +147,20 @@ func checkRouterDBErr(err error) resp.ResBody {
 	return resp.SysErr
 }
 
-// InitWhiteRouterCache 初始化免授权路由列表
-func InitWhiteRouterCache(traceID string) {
-	routers, err := platDb.RouterTable.FindByObject(&platDb.Router{Type: constant.RouterTypeWhite})
+// InitRouterCache 初始化免授权路由列表
+func InitRouterCache(traceID string) {
+	routers, err := platDb.RouterTable.FindAll()
 	if err != nil {
-		log.ErrorTF(traceID, "InitWhiteRouterCache Fail . Err Is : %v", err)
+		log.ErrorTF(traceID, "InitRouterCache Fail . Err Is : %v", err)
 		return
 	}
 	if len(routers) > 0 {
-		urls := make([]string, len(routers))
-		for i, item := range routers {
-			urls[i] = item.Url
+		routerMap := make(map[string]*platDb.Router, len(routers))
+		for _, item := range routers {
+			routerMap[item.Url] = item
 		}
 		// 写入缓存（持久生效）
-		err = redis.Set(constant.CacheKeyRouterWhite, urls, 0)
+		err = redis.Set(constant.CacheKeyRouterMap, routerMap, 0)
 		if err != nil {
 			log.ErrorTF(traceID, "SetWhiteRouterCache Fail . Err Is : %v", err)
 		}
