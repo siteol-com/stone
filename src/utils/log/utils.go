@@ -14,7 +14,7 @@ func isFileExist(fileName string) bool {
 	}
 }
 
-func extractDateTimeFormat(format string) (dateFmt, timeFmt string) {
+func extactDateTimeFormat(format string) (dateFmt, timeFmt string) {
 	// 算法：
 	// 找出两个字符串不同的部分，
 	// 如果有两处不同，一个是日期模式，一个是时间模式，
@@ -35,7 +35,7 @@ func extractDateTimeFormat(format string) (dateFmt, timeFmt string) {
 			panic(fmt.Sprintf("format string error at `%s`", format[i-1:]))
 		}
 
-		// fmt.PrintF("%c %c %d %d\n", format[i], contrast[i], idxs, start)
+		// fmt.Printf("%c %c %d %d\n", format[i], contrast[i], idxs, start)
 
 		if format[i] != contrast[i] {
 			if same {

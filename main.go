@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -32,9 +33,9 @@ func main() {
 	httpServer := &http.Server{Addr: config.JsonConfig.Server.Port, Handler: router}
 	// 启用HTTP服务 - 注册自定义路由
 	go comm.RecoverWrap(func() {
-		log.InfoF("Server Listening on port %s", config.JsonConfig.Server.Port)
+		log.InfoTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "Server Listening on port %s", config.JsonConfig.Server.Port)
 		if err := httpServer.ListenAndServe(); err != nil {
-			log.ErrorF("Server Listening on port %s . Err %v", config.JsonConfig.Server.Port, err)
+			log.ErrorTF(fmt.Sprintf("%s%s", config.SysNode, "DOWN"), "Server Listening on port %s . Err %v", config.JsonConfig.Server.Port, err)
 			os.Exit(1)
 		}
 	})()
@@ -45,7 +46,7 @@ func main() {
 		sig := <-sigChan
 		switch sig {
 		case syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT:
-			log.ErrorF("Server Get a signal %s, Stop the consume process", sig.String())
+			log.ErrorTF(fmt.Sprintf("%s%s", config.SysNode, "DOWN"), "Server Get a signal %s, Stop the consume process", sig.String())
 			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 			defer cancel()
 			// gracefully shutdown with timeout
@@ -59,9 +60,9 @@ func main() {
 func serviceInit() {
 	// 主服务进行响应码初始化
 	if config.SysNode == "APP01" {
-		err := platService.InitResponseCache("APP01-Init")
+		err := platService.InitResponseCache(fmt.Sprintf("%s%s", config.SysNode, "INIT"))
 		if err != nil {
-			log.ErrorF("InitResponseCache Fail . Err is : %v", err)
+			log.ErrorTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "InitResponseCache Fail . Err is : %v", err)
 			os.Exit(1)
 		}
 	}

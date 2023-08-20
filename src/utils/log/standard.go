@@ -56,12 +56,12 @@ func (s *Standard) TPrintF(v, l levelIndex, tag string, format string, m ...any)
 	}
 
 	if tag == "" {
-		tag = DefaultTag
+		tag = DEFAULT_TAG
 	}
 	r := record{
 		Level:  l.ColorLevel(),
 		Tag:    tag,
-		Divide: DefaultDivide,
+		Divide: DEFAULT_DIVIDE,
 	}
 	if format == "" {
 		r.Message = fmt.Sprint(m...)
@@ -87,7 +87,8 @@ func (s *Standard) TPrintF(v, l levelIndex, tag string, format string, m ...any)
 		_, r.File = filepath.Split(r.File)
 	}
 
-	if appRoot != "" {
+	// 测试和研发环境（Test）打印完整文件路径
+	if appRoot != "" && logEnv != Testing {
 		r.File = strings.Replace(r.File, appRoot, "", 1)
 	}
 
@@ -126,15 +127,15 @@ func (s *Standard) TPrintTF(v, l levelIndex, tag string, traceID string, format 
 	}
 
 	if tag == "" {
-		tag = DefaultTag
+		tag = DEFAULT_TAG
 	}
 	r := record{
 		Level:  l.ColorLevel(),
 		Tag:    tag,
-		Divide: DefaultDivide,
+		Divide: DEFAULT_DIVIDE,
 	}
 	if traceID != "" {
-		traceID = "[" + traceID + "]"
+		traceID = traceID + " >"
 	}
 	r.TraceID = boldColorStr(traceIDColor, traceID)
 
@@ -161,8 +162,8 @@ func (s *Standard) TPrintTF(v, l levelIndex, tag string, traceID string, format 
 		// r.File = "???"
 		_, r.File = filepath.Split(r.File)
 	}
-
-	if appRoot != "" {
+	// 测试和研发环境（Test）打印完整文件路径
+	if appRoot != "" && logEnv != Testing {
 		r.File = strings.Replace(r.File, appRoot, "", 1)
 	}
 
@@ -222,7 +223,7 @@ func (s *Standard) ChangeFormat(format string) {
 	// println(s.dateFmt, s.timeFmt)
 
 	// 提取出日期和时间的格式化模式字符串
-	s.dateFmt, s.timeFmt = extractDateTimeFormat(format)
+	s.dateFmt, s.timeFmt = extactDateTimeFormat(format)
 	if s.dateFmt != "" {
 		s.pattern = strings.Replace(s.pattern, s.dateFmt, "{{ .Date }}", -1)
 	}

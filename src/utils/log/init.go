@@ -9,26 +9,29 @@ import (
 )
 
 const (
-	DefaultSuffix = ".log"
-	DefaultDir    = "../logs/"
+	DEFAULT_SUFFIX = ".log"
+	DEFAULT_DIR    = "../logs/"
+	Testing        = "test"
 )
 
 var (
 	std         Logger
-	globalLevel          = DebugLevel // 默认 debug 级别
-	logPath              = ""
-	logFilePtr  *os.File = nil
-	splitRule            = ""
-	appRoot              = ""
-	logFormat            = DEFAULT_FORMAT_TRACED
+	globalLevel = DebugLevel // 默认 debug 级别
+
+	logPath             = ""
+	logFilePtr *os.File = nil
+	splitRule           = ""
+	appRoot             = ""
+	logFormat           = DEFAULT_FORMAT_TRACEID
+	logEnv              = ""
 )
 
 func init() {
 	// 默认输出os.Std
 	std = NewStandard(os.Stdout, logFormat)
 	if logPath == "" {
-		_, pName := filepath.Split(os.Args[0])
-		logPath = DefaultDir + pName + DefaultSuffix
+		_, progName := filepath.Split(os.Args[0])
+		logPath = DEFAULT_DIR + progName + DEFAULT_SUFFIX
 	}
 
 	redirectSyslog()
@@ -108,7 +111,7 @@ func removeLogFile() {
 	curDate := cur.Add(d * 60).Format("20060102")
 
 	filepath.Walk(sPath, func(path string, info os.FileInfo, err error) error {
-		if (info != nil) && (!info.IsDir()) && (strings.Index(info.Name(), DefaultSuffix) > 0) {
+		if (info != nil) && (!info.IsDir()) && (strings.Index(info.Name(), DEFAULT_SUFFIX) > 0) {
 			nameArray := []byte(info.Name())
 			var date []byte
 			date = nameArray[len(logFileName)+1:]

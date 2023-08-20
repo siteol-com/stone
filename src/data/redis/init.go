@@ -1,6 +1,7 @@
 package redis
 
 import (
+	"fmt"
 	"os"
 	"siteOl.com/stone/server/src/data/config"
 	"siteOl.com/stone/server/src/utils/log"
@@ -20,9 +21,9 @@ func Init() {
 	})
 	err := cluster.Ping().Err()
 	if err != nil {
-		log.ErrorF("Init Redis Fail . Err : %s", err)
+		log.ErrorTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "Init Redis Fail . Err : %s", err)
 		os.Exit(1)
 	} else {
-		log.InfoF("Init Redis success")
+		log.InfoTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "Init Redis success")
 	}
 }

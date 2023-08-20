@@ -9,19 +9,19 @@ import (
 
 func TestExtactDateTimeFormat(t *testing.T) {
 	format := `{"level": "info", "file": "path/main.go", "line":88, "log": "message"}`
-	dateFmt, timeFmt := extractDateTimeFormat(format)
+	dateFmt, timeFmt := extactDateTimeFormat(format)
 	if dateFmt != "" && timeFmt != "" {
 		t.FailNow()
 	}
 
 	format = `{"datetime": "2006-01-02 15:04:05.999999999", "level": "info", "file": "path/main.go", "line":88, "log": "message"}`
-	dateFmt, timeFmt = extractDateTimeFormat(format)
+	dateFmt, timeFmt = extactDateTimeFormat(format)
 	if dateFmt != "2006-01-02 15:04:05.999999999" && timeFmt != "" {
 		t.FailNow()
 	}
 
 	format = `{"date": "2006-01-02", "time": "15:04:05.999999999", "level": "info", "file": "path/main.go", "line":88, "log": "message"}`
-	dateFmt, timeFmt = extractDateTimeFormat(format)
+	dateFmt, timeFmt = extactDateTimeFormat(format)
 	if dateFmt != "2006-01-02" && timeFmt != "15:04:05.999999999" {
 		t.FailNow()
 	}
@@ -37,7 +37,7 @@ func TestExtactDateTimeFormat(t *testing.T) {
 
 		// 有两个 2006 ，会出错
 		format = `{"date": "2006-01-02", "time": "15:04:05.999999999", "Tag": "2006" "level": "info", "file": "path/main.go", "line":88, "log": "message"}`
-		dateFmt, timeFmt = extractDateTimeFormat(format)
+		dateFmt, timeFmt = extactDateTimeFormat(format)
 	}()
 }
 

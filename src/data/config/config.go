@@ -44,6 +44,7 @@ func init() {
 	log.SetLevel(JsonConfig.Server.LogLevel)  // 日志等级
 	log.SetAutoSplit(log.CronDaily)           // 日志切割
 	log.SetAppRoot(JsonConfig.Server.LogRoot) // 日志深度(2表示上级../logs/）
+	log.SetEnv(SysEnv)
 }
 
 // ReadConfig 启动读取配置文件

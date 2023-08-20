@@ -45,7 +45,7 @@ func AuthLogin(traceID string, req *platModel.AuthLoginReq) resp.ResBody {
 	}
 	// 生成Token 时间戳+随机长度 = 32登陆Token
 	now := time.Now()
-	token := now.Format(constant.TimeNumber) + comm.RandStr(18)
+	token := now.Format(constant.TimeNumber) + comm.RandStr(18, false)
 	// 创建登陆记录
 	InsertLoginRecord(account.ID, tenant.ID, constant.LoginTypeAuth, now, token, traceID)
 	// TODO 踢出超限的登陆数据

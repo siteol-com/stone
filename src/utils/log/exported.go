@@ -24,6 +24,11 @@ func SetLevel(l string) {
 	globalLevel = indexOfLevel(l)
 }
 
+// SetEnv 设置日志级别
+func SetEnv(e string) {
+	logEnv = e
+}
+
 // SetOutputPath 设置日志输出位置
 func SetOutputPath(path string) {
 	logPath = path
