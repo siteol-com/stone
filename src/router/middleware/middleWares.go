@@ -11,16 +11,18 @@ import (
 func AuthMiddleWare(c *gin.Context) {
 	// 生成请求唯一标志
 	traceID := comm.TraceID()
-	log.InfoTF(traceID, "AuthMiddleWare URL = %s", c.Request.URL.String())
+	log.InfoTF(traceID, "AuthMiddleWare URL = %s", c.Request.URL.Path)
+	// 获取路由配置
+	router := getRouter(c.Request.URL.Path, "AuthMiddleWare", traceID)
 	defer func() {
 		// 退出前的追加处理
-		returnJSON(c, "AuthMiddleWare", traceID)
+		returnJSON(c, router, "AuthMiddleWare", traceID)
 	}()
 	c.Set(constant.TraceID, traceID)
 	// 设置语言
 	setLang(c)
 	// 读取请求
-	if readReq(c, traceID) != nil {
+	if readReq(c, router, "AuthMiddleWare", traceID) != nil {
 		return
 	}
 	// 读取鉴权信息

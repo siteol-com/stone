@@ -32,6 +32,9 @@ const (
 	RouterTypeAuth  = "1" // 授权路由
 	RouterTypeWhite = "2" // 白名单路由
 
+	RouterLogPrint    = "1" // 路由日志打印
+	RouterLogPrintNot = "2" // 路由日志不打印
+
 	CacheKeyRouterMap = ProjectName + "::RouterMap"
 	CacheKeyTransLang = ProjectName + "::TranLangMap" // 响应码翻译缓存Map的Key
 )
