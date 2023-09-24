@@ -60,15 +60,16 @@ func readReq(c *gin.Context, router *platDb.Router, middlewareName, traceID stri
 	if router.PrintReq == constant.RouterLogPrintNot {
 		printBts = []byte("{ Req Set Not Print }")
 	} else {
-		printBts, err := ioutil.ReadAll(c.Request.Body)
+		bodyBts, err := ioutil.ReadAll(c.Request.Body)
 		if err != nil {
 			log.ErrorTF(traceID, "%s ReqBody Read Fail: %s", middlewareName, err)
 			c.Set(constant.RespBody, resp.SysErr)
 			return err
 		}
 		// 写回body
-		bodyGo := ioutil.NopCloser(bytes.NewBuffer(printBts))
+		bodyGo := ioutil.NopCloser(bytes.NewBuffer(bodyBts))
 		c.Request.Body = bodyGo
+		printBts = bodyBts
 	}
 
 	log.InfoTF(traceID, "%s ReqBody: %s", middlewareName, printBts)

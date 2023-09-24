@@ -5,8 +5,6 @@ import (
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/locales/zh"
 	ut "github.com/go-playground/universal-translator"
-	"reflect"
-	"runtime"
 	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/utils/log"
 	"strings"
@@ -29,8 +27,6 @@ func init() {
 		return
 	}
 	v = validate
-	// TODO 注册自定义校验
-	// CustomBindingValidator()
 }
 
 // 初始化语言国际化
@@ -40,6 +36,8 @@ func transInit() (validate *validator.Validate, err error) {
 		enT := en.New() //english
 		uni := ut.New(zhT, zhT, enT)
 		validate = vObj
+		// 注册自定义校验
+		CustomBindingValidator(validate)
 		// 初始化全部翻译对象
 		for _, local := range constant.TransLangSupport {
 			initLocal := local[:strings.Index(local, "-")]
@@ -52,33 +50,45 @@ func transInit() (validate *validator.Validate, err error) {
 			switch initLocal {
 			case "en":
 				err = enTrans.RegisterDefaultTranslations(validate, trans)
-			case "zh":
-				err = zhTrans.RegisterDefaultTranslations(validate, trans)
+			//case "zh":
+			//	err = zhTrans.RegisterDefaultTranslations(validate, trans)
 			default:
 				err = zhTrans.RegisterDefaultTranslations(validate, trans)
 			}
+			// 注册自定义文言
+			CustomBindingTranslations(validate, &trans)
 			transMap[local] = trans
 		}
 	}
 	return
 }
 
-// 获取函数名
-func fnName(i any) string {
-	fullName := runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
-	dotIndex := strings.LastIndex(fullName, ".")
-	return fullName[dotIndex+1:]
+// CustomBindingValidator 注册自定义校验
+func CustomBindingValidator(validate *validator.Validate) {
+	registryValidator(validate, "letterUnder", letterUnder)
 }
 
-func registry(fn validator.Func) {
-	funcName := fnName(fn)
-	err := v.RegisterValidation(funcName, fn)
+// CustomBindingTranslations 注册翻译器
+func CustomBindingTranslations(validate *validator.Validate, trans *ut.Translator) {
+	validate.RegisterTranslation("letterUnder", *trans, returnRegTransFunc("letterUnder"), returnTransFunc("letterUnder"))
+}
+
+func registryValidator(validate *validator.Validate, name string, fn validator.Func) {
+	err := validate.RegisterValidation(name, fn)
 	if err != nil {
 		return
 	}
 }
 
-// CustomBindingValidator 注册自定义校验
-func CustomBindingValidator() {
-	registry(maxLength)
+func returnRegTransFunc(name string) validator.RegisterTranslationsFunc {
+	return func(ut ut.Translator) error {
+		return ut.Add(name, returnTrans(name, ut.Locale()), true)
+	}
+}
+
+func returnTransFunc(name string) validator.TranslationFunc {
+	return func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T(name, fe.Field())
+		return t
+	}
 }

@@ -13,8 +13,8 @@ var platDb *gorm.DB
 
 // InitPlatFromDb 初始化平台数据库
 func InitPlatFromDb() {
-	// 采用默认配置打开数据可
-	db, err := gorm.Open(mysql.Open(config.JsonConfig.MySQL.Plat), &gorm.Config{})
+	// 采用默认配置打开数据可（默认禁用事务）
+	db, err := gorm.Open(mysql.Open(config.JsonConfig.MySQL.Plat), &gorm.Config{SkipDefaultTransaction: true})
 	if err != nil {
 		log.FatalTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "Open PlatDb Fail . Err Is : %s", err)
 		return

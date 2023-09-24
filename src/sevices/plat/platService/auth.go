@@ -96,6 +96,6 @@ func getUserPermissionRouters(accountId uint64, traceID string) (aliasList []str
 		return
 	}
 	// 根据权限获取路由集
-	routers = getPermissionRouters(permissionIds, traceID)
+	routers = getPermissionRoutersUrls(permissionIds, traceID)
 	return
 }

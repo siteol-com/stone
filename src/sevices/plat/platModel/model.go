@@ -91,3 +91,25 @@ type ResponsePageReq struct {
 	Type        string `json:"responseType" binding:"omitempty,oneof='2' '5'"` // 响应类型，该字段用于筛选，可配置2和5
 	model.PageReq
 }
+
+// PermissionBashReq 权限基础查询对象（过滤前提）
+type PermissionBashReq struct {
+	IsSupper bool            // 超级租户查询（根据登陆账号判定）
+	TenantId uint64          // 租户ID（非超级租户需要检索租户权限表）
+	IDMap    map[uint64]bool // 租户可使用的权限集合
+}
+
+// PermissionGetRes 权限获取对象
+type PermissionGetRes struct {
+	*platDb.Permission
+	RouterList []*platDb.Router `json:"routerList"` // 路由对象
+}
+
+// Tree 树对象
+type Tree struct {
+	Title    string  `json:"title"`    // 树标题
+	Key      string  `json:"key"`      // 树属性
+	Children []*Tree `json:"children"` // 树子
+	Level    string  `json:"level"`    // 表示树等级
+	Id       uint64  `json:"-"`        // 表示树数据ID
+}

@@ -39,4 +39,15 @@ const (
 	ResponseGetNG     = "5005000" // 响应码查询失败
 	ResponseUniCodeNG = "5005001" // 响应码不可重复
 
+	PermissionAddOK       = "2006000" // 权限创建成功
+	PermissionEditOK      = "2006001" // 权限编辑成功
+	PermissionDelOK       = "2006002" // 权限删除成功
+	PermissionSortOK      = "2006003" // 权限排序成功
+	PermissionGetNG       = "5006000" // 权限查询失败
+	PermissionUniNameNG   = "5006001" // 权限名不可重复
+	PermissionUniAliasNG  = "5006002" // 权限别名不可重复
+	PermissionUniRouterNG = "5006003" // 权限关联路由不可重复
+	PermissionDelChildNG  = "5006004" // 权限存在子集不可删除
+	PermissionSortNG      = "5006005" // 权限排序失败
+
 )

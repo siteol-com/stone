@@ -15,7 +15,17 @@ func PlatFormRouter(router *gin.Engine) {
 		{
 			accountRouter.POST("/add", platHandler.AddAccount)
 		}
-
+		// 权限相关
+		permissionRouter := platRouter.Group("/permission")
+		{
+			permissionRouter.POST("/tree", platHandler.TreePermission)
+			permissionRouter.POST("/add", platHandler.AddPermission)
+			permissionRouter.POST("/get", platHandler.GetPermission)
+			permissionRouter.POST("/edit", platHandler.EditPermission)
+			permissionRouter.POST("/del", platHandler.DelPermission)
+			permissionRouter.POST("/bro", platHandler.BroPermission)
+			permissionRouter.POST("/sort", platHandler.SortPermission)
+		}
 		// 路由相关
 		routerRouter := platRouter.Group("/router")
 		{

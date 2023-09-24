@@ -29,7 +29,7 @@ func GetLoginUser(c *gin.Context) *platModel.AuthUser {
 
 // ValidateReqObj 读取并验证请求数据
 func ValidateReqObj(c *gin.Context, req any) (traceID string, reqObj any, err error) {
-	// TraceID 日志追踪
+	// traceID 日志追踪
 	traceID = c.GetString(constant.TraceID)
 	// 校验并且 解析请求数据
 	err, reqObj = validate.Readable(c, req)

@@ -83,6 +83,14 @@ func (t Table[T]) InsertOne(req any) (err error) {
 	return
 }
 
+// InsertBatch 插入多条数据
+func (t Table[T]) InsertBatch(req any) (err error) {
+	var exe T
+	r := exe.DataBase().Create(req)
+	err = r.Error
+	return
+}
+
 // UpdateOne 更新一条数据（根据ID）
 func (t Table[T]) UpdateOne(req any) (err error) {
 	var exe T

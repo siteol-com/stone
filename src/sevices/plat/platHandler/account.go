@@ -24,7 +24,7 @@ type Test struct {
 
 // AddAccount 创建账号
 func AddAccount(c *gin.Context) {
-	// TraceID 日志追踪
+	// traceID 日志追踪
 	traceID := c.GetString(constant.TraceID)
 	// TODO 获取登录用户对象
 	//loginUser := plat.GetLoginUser(c)

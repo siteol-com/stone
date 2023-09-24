@@ -11,11 +11,11 @@ import (
 )
 
 // TableMsgTrans 执行Msg翻译
-func TableMsgTrans(res resp.ResBody, lang, traceId string) string {
+func TableMsgTrans(res resp.ResBody, lang, traceID string) string {
 	// 获取翻译缓存
 	tranStr, err := redis.Get(constant.CacheKeyTransLang)
 	if err != nil {
-		log.ErrorTF(traceId, "GetTransLangCacheMap Fail . Err Is : %v", err)
+		log.ErrorTF(traceID, "GetTransLangCacheMap Fail . Err Is : %v", err)
 		// 出错不翻译
 		return res.Msg
 
@@ -23,7 +23,7 @@ func TableMsgTrans(res resp.ResBody, lang, traceId string) string {
 	transMap := make(map[string]map[string]string)
 	err = json.Unmarshal([]byte(tranStr), &transMap)
 	if err != nil {
-		log.ErrorTF(traceId, "JsonUnmarshal TransMap Fail . Err Is : %v", err)
+		log.ErrorTF(traceID, "JsonUnmarshal TransMap Fail . Err Is : %v", err)
 		// 出错不翻译
 		return res.Msg
 	}

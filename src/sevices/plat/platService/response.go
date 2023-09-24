@@ -59,7 +59,7 @@ func AddResponse(traceID string, req *platDb.Response) resp.ResBody {
 	}
 	err = platDb.ResponseTable.InsertOne(req)
 	if err != nil {
-		log.ErrorTF(traceID, "PageResponse Fail . Err Is : %v", err)
+		log.ErrorTF(traceID, "AddResponse Fail . Err Is : %v", err)
 		return checkResponseDBErr(err)
 	}
 	// 刷新响应码缓存
@@ -76,16 +76,16 @@ func makeResponseCode(traceID string, req *platDb.Response) (err error) {
 	}
 	serviceCode, _ := strconv.Atoi(req.ServiceCode)
 	responseCode := fmt.Sprintf("%s%03d%03d", req.Type, serviceCode, groupCount)
-	log.ErrorTF(traceID, "ResponseMakeResponseCode Success . Code Is : %s", responseCode)
+	log.InfoTF(traceID, "ResponseMakeResponseCode Success . Code Is : %s", responseCode)
 	req.Code = responseCode
 	return
 }
 
 // GetResponse 查询响应码
 func GetResponse(traceID string, req *model.IdReq) resp.ResBody {
-	response, err := platDb.ResponseTable.FindOneById(req.Id)
+	response, err := platDb.ResponseTable.FindOneById(req.ID)
 	if err != nil {
-		log.ErrorTF(traceID, "GetResponse By Id %d Fail . Err Is : %v", req.Id, err)
+		log.ErrorTF(traceID, "GetResponse By Id %d Fail . Err Is : %v", req.ID, err)
 		// 响应码查询失败
 		return resp.Fail(constant.ResponseGetNG)
 	}
@@ -125,16 +125,16 @@ func EditResponse(traceID string, req *platDb.Response) resp.ResBody {
 
 // DelResponse 删除响应码
 func DelResponse(traceID string, req *model.IdReq) resp.ResBody {
-	response, err := platDb.ResponseTable.FindOneById(req.Id)
+	response, err := platDb.ResponseTable.FindOneById(req.ID)
 	if err != nil {
-		log.ErrorTF(traceID, "GetResponse By Id %d Fail . Err Is : %v", req.Id, err)
+		log.ErrorTF(traceID, "GetResponse By Id %d Fail . Err Is : %v", req.ID, err)
 		// 响应码查询失败
 		return resp.Fail(constant.ResponseGetNG)
 	}
 	response.Status = constant.StatusClose
 	err = platDb.ResponseTable.UpdateOne(response)
 	if err != nil {
-		log.ErrorTF(traceID, "DelResponse By Id %d Fail . Err Is : %v", req.Id, err)
+		log.ErrorTF(traceID, "DelResponse By Id %d Fail . Err Is : %v", req.ID, err)
 		return resp.SysErr
 	}
 	// 刷新响应码缓存

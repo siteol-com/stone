@@ -26,3 +26,15 @@ func checkPhoneNum(phone string) (legal bool) {
 	legal, _ = regexp.MatchString(pattern, phone)
 	return
 }
+
+// letterUnder 校验字母下划线
+// @param str 输入字符串
+func letterUnder(lv validator.FieldLevel) (check bool) {
+	val := lv.Field().String()
+	if val == "" {
+		return true
+	}
+	pattern := `^[a-zA-Z_]*$`
+	check, _ = regexp.MatchString(pattern, val)
+	return
+}
