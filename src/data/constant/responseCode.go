@@ -50,4 +50,12 @@ const (
 	PermissionDelChildNG  = "5006004" // 权限存在子集不可删除
 	PermissionSortNG      = "5006005" // 权限排序失败
 
+	RoleAddOK           = "2007000" // 角色创建成功
+	RoleEditOK          = "2007001" // 角色编辑成功
+	RoleDelOK           = "2007002" // 角色删除成功
+	RoleGetNG           = "5007000" // 角色查询失败
+	RoleUniNameNG       = "5007001" // 角色名不可重复
+	RoleUniPermissionNG = "5007002" // 角色权限不可重复
+	RoleEditLockNG      = "5007003" // 该角色不可编辑
+	RoleDelLockNG       = "5007004" // 该角色不可删除
 )

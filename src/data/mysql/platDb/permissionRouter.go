@@ -27,7 +27,14 @@ func (t PermissionRouter) TableName() string {
 
 // FindPermissionRouterByIds 获取权限对应的路由ID
 func (t PermissionRouter) FindPermissionRouterByIds(permissionIds []uint64) (res []uint64, err error) {
-	r := platDb.Table("permission_router").Distinct("router_id").Where("permission_id IN ?", permissionIds).Find(&res)
+	r := platDb.Table(t.TableName()).Distinct("router_id").Where("permission_id IN ?", permissionIds).Find(&res)
+	err = r.Error
+	return
+}
+
+// FindPermissionsByRouterId 根据路由获取权限ID
+func (t PermissionRouter) FindPermissionsByRouterId(routerId uint64) (res []uint64, err error) {
+	r := platDb.Table(t.TableName()).Distinct("permission_id").Where("router_id", routerId).Find(&res)
 	err = r.Error
 	return
 }
@@ -35,6 +42,13 @@ func (t PermissionRouter) FindPermissionRouterByIds(permissionIds []uint64) (res
 // DeleteByPermissionId 根据权限ID移除路由
 func (t PermissionRouter) DeleteByPermissionId(permissionId uint64) (err error) {
 	r := platDb.Where("permission_id = ?", permissionId).Delete(&t)
+	err = r.Error
+	return
+}
+
+// DeleteByRouterId 根绝路由ID删除关联的权限
+func (t PermissionRouter) DeleteByRouterId(routerId uint64) (err error) {
+	r := platDb.Where("router_id = ?", routerId).Delete(&t)
 	err = r.Error
 	return
 }

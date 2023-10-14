@@ -113,3 +113,10 @@ type Tree struct {
 	Level    string  `json:"level"`    // 表示树等级
 	Id       uint64  `json:"-"`        // 表示树数据ID
 }
+
+// RolePageReq 角色分页查询
+type RolePageReq struct {
+	Name     string `json:"name"` // 角色名称
+	TenantId uint64 `json:"-"`    // 租户ID（根据登陆用户读取）
+	model.PageReq
+}

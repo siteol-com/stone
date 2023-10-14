@@ -10,8 +10,8 @@ const (
 
 	RespTypeJSON = "application/json; charset=utf-8" // 固定响应格式，默认JSON
 
-	StatusOpen  = "0" // 正常 启动
-	StatusLock  = "1" // 禁用 锁定 登出
+	StatusOpen  = "0" // 正常 启动 可变更
+	StatusLock  = "1" // 禁用 锁定 登出 不可变更
 	StatusClose = "2" // 移除 弃用 踢出
 
 	TimeNormal = "2006-01-02 15:04:05" // 常见时间格式

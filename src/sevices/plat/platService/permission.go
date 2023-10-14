@@ -103,11 +103,9 @@ func EditPermission(traceID string, req *platDb.Permission) resp.ResBody {
 		return checkPermissionDBErr(err)
 	}
 	// 刷新关联的路由
-	if len(req.RouterIds) > 0 {
-		err := refreshPermissionRouters(req, true, traceID)
-		if err != nil {
-			return checkPermissionDBErr(err)
-		}
+	err = refreshPermissionRouters(req, true, traceID)
+	if err != nil {
+		return checkPermissionDBErr(err)
 	}
 	// 通知权限变动，异步通知受影响的Token失效（上层不涉及数据删除等行为）
 	go notifyChangeByPermissionIds([]uint64{req.ID}, false, traceID)
@@ -123,7 +121,7 @@ func DelPermission(traceID string, req *model.IdReq) resp.ResBody {
 		return resp.Fail(constant.PermissionGetNG)
 	}
 	// 检查子集
-	children, err := platDb.PermissionTable.FindByObject(platDb.Permission{Pid: permission.ID})
+	children, err := platDb.PermissionTable.FindByObject(&platDb.Permission{Pid: permission.ID})
 	if err != nil {
 		log.ErrorTF(traceID, "FindPermissionChild Fail . PID %d . Err is : %s", permission.ID, err)
 		// 权限查询失败
@@ -138,13 +136,14 @@ func DelPermission(traceID string, req *model.IdReq) resp.ResBody {
 		// TODO
 		return resp.Fail("")
 	}
+	// 权限是硬删除行为
 	err = platDb.PermissionTable.DeleteOne(req.ID)
 	if err != nil {
 		log.ErrorTF(traceID, "DelPermission By Id %d Fail . Err Is : %v", req.ID, err)
 		return resp.SysErr
 	}
-	// 通知权限变动，异步通知受影响的Token失效（上层不涉及数据删除等行为）
-	go notifyChangeByPermissionIds([]uint64{req.ID}, false, traceID)
+	// 通知权限变动，异步通知受影响的Token失效（需要删除角色关联权限）
+	go notifyChangeByPermissionIds([]uint64{req.ID}, true, traceID)
 	return resp.SuccessWithCode(constant.PermissionDelOK, true)
 }
 
@@ -158,7 +157,7 @@ func BroPermission(traceID string, req *model.IdReq) resp.ResBody {
 	}
 	// 检查子集
 	var bros platDb.PermissionArray
-	bros, err = platDb.PermissionTable.FindByObject(platDb.Permission{Pid: permission.Pid})
+	bros, err = platDb.PermissionTable.FindByObject(&platDb.Permission{Pid: permission.Pid})
 	if err != nil {
 		log.ErrorTF(traceID, "FindPermissionChild Fail . PID %d . Err is : %s", permission.ID, err)
 		// 权限查询失败
@@ -209,7 +208,7 @@ func recursionPermissionTree(traceID string, treeNode *platModel.Tree, req *plat
 	}
 	// 查询子集
 	var permissionList platDb.PermissionArray
-	permissionList, err = platDb.PermissionTable.FindByObject(platDb.Permission{Pid: treeNode.Id})
+	permissionList, err = platDb.PermissionTable.FindByObject(&platDb.Permission{Pid: treeNode.Id})
 	if err != nil {
 		log.WarnTF(traceID, "RecursionPermissionTree Fail . PID %d . Err is : %s", treeNode.Id, err)
 		return
