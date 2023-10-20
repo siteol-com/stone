@@ -1,0 +1,119 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  platModel.AuthLoginReq:
+    properties:
+      account:
+        description: 账号
+        type: string
+      password:
+        description: 密码
+        type: string
+      tenantAlias:
+        description: 租户别名
+        type: string
+    required:
+    - account
+    - password
+    - tenantAlias
+    type: object
+  platModel.AuthLoginRes:
+    properties:
+      token:
+        description: 登陆Token
+        type: string
+    type: object
+  resp.ResBody:
+    properties:
+      code:
+        description: 响应码
+        example: 200/500/S1000/E1000
+        type: string
+      data:
+        description: 响应数据
+      msg:
+        description: 响应消息
+        example: 操作成功/失败
+        type: string
+      unPop:
+        description: 免弹窗提示
+        example: true
+        type: boolean
+    type: object
+host: 127.0.0.1:8000
+info:
+  contact:
+    email: stone@siteol.com
+    name: Stone
+    url: https://stone.siteol.com
+  description: |-
+    物联网基座Stone，提供一个多层级SaaS化的基础开箱即用中台管理服务。
+    # 概述
+    该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。
+
+    [Swagger[支持调试]](/docs/swagger/index.html) 丨 [ReDoc[阅读增强]](/docs/redoc/index.html)
+
+    # API说明
+    本系统的全部接口采用【POST】【application/json】方式传输数据。
+
+    除开放接口以外的其他接口均需要通过【ApiKeyAuth:请求头[Token]】完成鉴权。
+  title: Stone
+  version: "1.0"
+  x-logo:
+    altText: Stone
+    url: /docs/sc/logo.png
+paths:
+  /open/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: 平台最基础的账号密码登陆方式登陆
+      operationId: AuthLogin开放账密登陆
+      parameters:
+      - description: 请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/platModel.AuthLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登陆成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/resp.ResBody'
+            - properties:
+                data:
+                  $ref: '#/definitions/platModel.AuthLoginRes'
+              type: object
+        "400":
+          description: 数据校验失败
+          schema:
+            $ref: '#/definitions/resp.ResBody'
+        "500":
+          description: 登陆失败相关
+          schema:
+            $ref: '#/definitions/resp.ResBody'
+      security:
+      - Token: []
+      summary: 开放账密登陆
+      tags:
+      - 开放接口
+securityDefinitions:
+  Token:
+    in: header
+    name: Token
+    type: apiKey
+swagger: "2.0"
+tags:
+- description: 基础开发接口
+  name: 开放接口
+- description: 基础开发接口
+  name: 平台
+x-tagGroups:
+- name: 基础
+  tags:
+  - 开放接口

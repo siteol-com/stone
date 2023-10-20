@@ -102,14 +102,15 @@ func returnMsgTrans(respBody any, c *gin.Context, router *platDb.Router, middlew
 			res.Msg = TableMsgTrans(res, c.GetString(constant.HeaderLang), c.GetString(constant.TraceID))
 		}
 	}
+	resBts, _ := json.Marshal(res)
 	printBts := []byte("{}")
 	if router.PrintRes == constant.RouterLogPrintNot {
 		printBts = []byte("{ Res Set Not Print}")
 	} else {
 		// JSON序列化
-		printBts, _ = json.Marshal(res)
+		printBts = resBts
 	}
 	log.InfoTF(traceID, "%s RespBody: %s", middlewareName, printBts)
 	// 响应结果
-	c.JSON(http.StatusOK, res)
+	c.Writer.Write(resBts)
 }

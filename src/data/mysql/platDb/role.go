@@ -7,11 +7,11 @@ import (
 
 // Role 角色表
 type Role struct {
-	ID       uint64 // 默认数据ID
-	Name     string // 角色名称
-	Remark   string // 角色备注
-	TenantId uint64 // 租户ID
-	Mark     string // 变更标识 0可变更1禁止变更
+	ID       uint64 `json:"id"  binding:"numeric"`          // 默认数据ID
+	Name     string `json:"name" binding:"required,max=16"` // 角色名称
+	Remark   string `json:"remark" binding:"max=64"`        // 角色备注
+	TenantId uint64 // 租户ID（后端赋值）
+	Mark     string // 变更标识 0可变更1禁止变更（前端不提交后端默认0）
 	Common
 	PermissionIds []uint64 `json:"permissionIds" binding:"unique" gorm:"-"` // 权限集，当前对象会忽略此字段，权限合法性校验交给控制层
 }

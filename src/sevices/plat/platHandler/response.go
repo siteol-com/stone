@@ -5,14 +5,14 @@ import (
 	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/model"
 	"siteOl.com/stone/server/src/data/mysql/platDb"
-	"siteOl.com/stone/server/src/sevices/plat"
+	"siteOl.com/stone/server/src/sevices"
 	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/sevices/plat/platService"
 )
 
 // PageResponse /plat/response/page 响应码分页
 func PageResponse(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platModel.ResponsePageReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platModel.ResponsePageReq{})
 	if err != nil {
 		return
 	}
@@ -22,7 +22,7 @@ func PageResponse(c *gin.Context) {
 
 // AddResponse /plat/response/add 响应码创建
 func AddResponse(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platDb.Response{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Response{})
 	if err != nil {
 		return
 	}
@@ -32,7 +32,7 @@ func AddResponse(c *gin.Context) {
 
 // GetResponse /plat/response/get 响应码查询
 func GetResponse(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &model.IdReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &model.IdReq{})
 	if err != nil {
 		return
 	}
@@ -42,7 +42,7 @@ func GetResponse(c *gin.Context) {
 
 // EditResponse /plat/response/edit 响应码编辑
 func EditResponse(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platDb.Response{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Response{})
 	if err != nil {
 		return
 	}
@@ -52,7 +52,7 @@ func EditResponse(c *gin.Context) {
 
 // DelResponse /plat/response/del 响应码删除
 func DelResponse(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &model.IdReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &model.IdReq{})
 	if err != nil {
 		return
 	}

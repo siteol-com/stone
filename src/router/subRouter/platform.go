@@ -15,6 +15,15 @@ func PlatFormRouter(router *gin.Engine) {
 		{
 			accountRouter.POST("/add", platHandler.AddAccount)
 		}
+		// 角色相关
+		routerRole := platRouter.Group("/role")
+		{
+			routerRole.POST("/page", platHandler.PageRole)
+			routerRole.POST("/add", platHandler.AddRole)
+			routerRole.POST("/get", platHandler.GetRole)
+			routerRole.POST("/edit", platHandler.EditRole)
+			routerRole.POST("/del", platHandler.DelRole)
+		}
 		// 权限相关
 		permissionRouter := platRouter.Group("/permission")
 		{

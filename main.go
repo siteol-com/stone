@@ -20,6 +20,40 @@ import (
 	"siteOl.com/stone/server/src/router"
 )
 
+// @title			Stone
+// @version         1.0
+
+// @description   	物联网基座Stone，提供一个多层级SaaS化的基础开箱即用中台管理服务。
+// @description   	# 概述
+// @description   	该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。
+// @description
+// @description   	[Swagger[支持调试]](/docs/swagger/index.html) 丨 [ReDoc[阅读增强]](/docs/redoc/index.html)
+// @description
+// @description   	# API说明
+// @description   	本系统的全部接口采用【POST】【application/json】方式传输数据。
+// @description
+// @description   	除开放接口以外的其他接口均需要通过【ApiKeyAuth:请求头[Token]】完成鉴权。
+
+// @contact.name 	Stone
+// @contact.url		https://stone.siteol.com
+// @contact.email	stone@siteol.com
+// @host			127.0.0.1:8000
+// @BasePath  		/
+// @accept			json
+
+// @securityDefinitions.apikey 	Token
+// @in 							header
+// @name 						Token
+
+// @x-logo {"url" :"/docs/sc/logo.png","altText":"Stone"}
+
+// @tag.name 开放接口
+// @tag.description 基础开发接口
+// @tag.name 平台
+// @tag.description 基础开发接口
+
+// @x-tagGroups [{ "name": "基础", "tags": ["开放接口"]}]
+
 // 主函数
 func main() {
 	// 初始化数据库

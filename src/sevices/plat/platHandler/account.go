@@ -63,6 +63,6 @@ func AddAccount(c *gin.Context) {
 	//	c.Set(model.RespBody, model.ResponseSystemError)
 	//	return
 	//}
-	c.Set(constant.RespBody, resp.OK)
+	c.Set(constant.RespBody, resp.SuccessUnPop(nil))
 	return
 }

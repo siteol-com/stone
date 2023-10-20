@@ -19,8 +19,6 @@ func maxLength(lv validator.FieldLevel) bool {
 }
 
 // checkPhoneNum 校验手机号是否合法
-// @param phone 手机号
-// @return legal 手机号是否合法
 func checkPhoneNum(phone string) (legal bool) {
 	pattern := `^[1]([3-9])[0-9]{9}$`
 	legal, _ = regexp.MatchString(pattern, phone)
@@ -28,7 +26,6 @@ func checkPhoneNum(phone string) (legal bool) {
 }
 
 // letterUnder 校验字母下划线
-// @param str 输入字符串
 func letterUnder(lv validator.FieldLevel) (check bool) {
 	val := lv.Field().String()
 	if val == "" {

@@ -5,14 +5,14 @@ import (
 	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/model"
 	"siteOl.com/stone/server/src/data/mysql/platDb"
-	"siteOl.com/stone/server/src/sevices/plat"
+	"siteOl.com/stone/server/src/sevices"
 	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/sevices/plat/platService"
 )
 
 // PageRole /plat/role/page 角色分页
 func PageRole(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platModel.RolePageReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platModel.RolePageReq{})
 	if err != nil {
 		return
 	}
@@ -23,7 +23,7 @@ func PageRole(c *gin.Context) {
 
 // AddRole /plat/role/add 角色创建
 func AddRole(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platDb.Role{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Role{})
 	if err != nil {
 		return
 	}
@@ -34,7 +34,7 @@ func AddRole(c *gin.Context) {
 
 // GetRole /plat/role/get 角色查询
 func GetRole(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &model.IdAnTenantReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &model.IdAnTenantReq{})
 	if err != nil {
 		return
 	}
@@ -45,7 +45,7 @@ func GetRole(c *gin.Context) {
 
 // EditRole /plat/role/edit 角色编辑
 func EditRole(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platDb.Role{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Role{})
 	if err != nil {
 		return
 	}
@@ -56,7 +56,7 @@ func EditRole(c *gin.Context) {
 
 // DelRole /plat/role/del 角色删除
 func DelRole(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &model.IdAnTenantReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &model.IdAnTenantReq{})
 	if err != nil {
 		return
 	}

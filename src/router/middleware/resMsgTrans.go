@@ -44,7 +44,8 @@ func TableMsgTrans(res resp.ResBody, lang, traceID string) string {
 	return res.Msg
 }
 
-// 执行变量替换
+// TableValReplace 执行变量替换
+// 实际生效，{{name}}修改成功 => 米虫修改成功
 func TableValReplace(temple string, data any) string {
 	if data == nil {
 		return temple

@@ -1,8 +1,9 @@
-package plat
+package sevices
 
 import (
 	"github.com/gin-gonic/gin"
 	"siteOl.com/stone/server/src/data/constant"
+	"siteOl.com/stone/server/src/data/resp"
 	"siteOl.com/stone/server/src/data/validate"
 	"siteOl.com/stone/server/src/sevices/plat/platModel"
 )
@@ -34,4 +35,10 @@ func ValidateReqObj(c *gin.Context, req any) (traceID string, reqObj any, err er
 	// 校验并且 解析请求数据
 	err, reqObj = validate.Readable(c, req)
 	return
+}
+
+// JsonRes 执行Json响应
+func JsonRes(c *gin.Context, res resp.ResBody) {
+
+	c.JSON(res.HttpCode, res)
 }

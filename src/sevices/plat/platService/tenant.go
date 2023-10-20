@@ -42,5 +42,5 @@ func CheckTenant(tenant *platDb.Tenant) (check bool, res resp.ResBody) {
 		res = resp.Fail(constant.TenantExpNG) // 租户已过期
 		return
 	}
-	return true, resp.OK
+	return true, resp.SuccessUnPop(nil)
 }

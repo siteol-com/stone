@@ -3,7 +3,7 @@ package platHandler
 import (
 	"github.com/gin-gonic/gin"
 	"siteOl.com/stone/server/src/data/constant"
-	"siteOl.com/stone/server/src/sevices/plat"
+	"siteOl.com/stone/server/src/sevices"
 	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/sevices/plat/platService"
 	"strings"
@@ -11,7 +11,7 @@ import (
 
 // ListDict /plat/dict/list 获取字典下拉列表
 func ListDict(c *gin.Context) {
-	traceID, reqObj, err := plat.ValidateReqObj(c, &platModel.DictListReq{})
+	traceID, reqObj, err := sevices.ValidateReqObj(c, &platModel.DictListReq{})
 	if err != nil {
 		return
 	}

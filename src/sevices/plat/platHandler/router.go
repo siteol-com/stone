@@ -5,14 +5,14 @@ import (
 	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/model"
 	"siteOl.com/stone/server/src/data/mysql/platDb"
-	"siteOl.com/stone/server/src/sevices/plat"
+	"siteOl.com/stone/server/src/sevices"
 	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/sevices/plat/platService"
 )
 
 // PageRouter /plat/router/page 路由分页
 func PageRouter(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platModel.RouterPageReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platModel.RouterPageReq{})
 	if err != nil {
 		return
 	}
@@ -22,7 +22,7 @@ func PageRouter(c *gin.Context) {
 
 // AddRouter /plat/router/add 路由创建
 func AddRouter(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platDb.Router{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Router{})
 	if err != nil {
 		return
 	}
@@ -32,7 +32,7 @@ func AddRouter(c *gin.Context) {
 
 // GetRouter /plat/router/get 路由查询
 func GetRouter(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &model.IdReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &model.IdReq{})
 	if err != nil {
 		return
 	}
@@ -42,7 +42,7 @@ func GetRouter(c *gin.Context) {
 
 // EditRouter /plat/router/edit 路由编辑
 func EditRouter(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platDb.Router{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Router{})
 	if err != nil {
 		return
 	}
@@ -52,7 +52,7 @@ func EditRouter(c *gin.Context) {
 
 // DelRouter /plat/router/del 路由删除
 func DelRouter(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &model.IdReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &model.IdReq{})
 	if err != nil {
 		return
 	}

@@ -27,5 +27,5 @@ func ListDict(traceID string, req *platModel.DictListReq) resp.ResBody {
 			"list": dictListMap, "map": dictValueMap,
 		})
 	}
-	return resp.OKUnPop
+	return resp.SuccessUnPop(nil)
 }

@@ -5,7 +5,7 @@ import (
 	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/model"
 	"siteOl.com/stone/server/src/data/mysql/platDb"
-	"siteOl.com/stone/server/src/sevices/plat"
+	"siteOl.com/stone/server/src/sevices"
 	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/sevices/plat/platService"
 )
@@ -25,7 +25,7 @@ func TreePermission(c *gin.Context) {
 
 // AddPermission /plat/permission/add 权限创建
 func AddPermission(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platDb.Permission{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Permission{})
 	if err != nil {
 		return
 	}
@@ -35,7 +35,7 @@ func AddPermission(c *gin.Context) {
 
 // GetPermission /plat/permission/get 权限查询
 func GetPermission(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &model.IdReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &model.IdReq{})
 	if err != nil {
 		return
 	}
@@ -45,7 +45,7 @@ func GetPermission(c *gin.Context) {
 
 // EditPermission /plat/permission/edit 权限编辑
 func EditPermission(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &platDb.Permission{})
+	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Permission{})
 	if err != nil {
 		return
 	}
@@ -55,7 +55,7 @@ func EditPermission(c *gin.Context) {
 
 // DelPermission /plat/permission/del 权限删除
 func DelPermission(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &model.IdReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &model.IdReq{})
 	if err != nil {
 		return
 	}
@@ -65,7 +65,7 @@ func DelPermission(c *gin.Context) {
 
 // BroPermission /plat/permission/bro 获取兄弟权限
 func BroPermission(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &model.IdReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &model.IdReq{})
 	if err != nil {
 		return
 	}
@@ -75,7 +75,7 @@ func BroPermission(c *gin.Context) {
 
 // SortPermission /plat/permission/sort 权限排序
 func SortPermission(c *gin.Context) {
-	traceID, req, err := plat.ValidateReqObj(c, &[]*model.SortReq{})
+	traceID, req, err := sevices.ValidateReqObj(c, &[]*model.SortReq{})
 	if err != nil {
 		return
 	}
