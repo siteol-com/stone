@@ -12,6 +12,8 @@ func DocsRouter(router *gin.Engine) {
 	docsRouter := router.Group("/docs")
 	{
 		// Swagger资源文件
+		docsRouter.POST("/sample", platHandler.Sample)
+		// Swagger资源文件
 		docsRouter.GET("/sc/*any", platHandler.ScFile)
 		// ReDoc
 		docsRouter.GET("/redoc/*any", platHandler.ReDoc)

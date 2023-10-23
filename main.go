@@ -27,7 +27,9 @@ import (
 // @description   	# 概述
 // @description   	该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。
 // @description
-// @description   	[Swagger[支持调试]](/docs/swagger/index.html) 丨 [ReDoc[阅读增强]](/docs/redoc/index.html)
+// @description   	[Swagger[支持调试]：http://localhost:8000/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html)
+// @description
+// @description   	[ReDoc[阅读增强]：http://localhost:8000/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)
 // @description
 // @description   	# API说明
 // @description   	本系统的全部接口采用【POST】【application/json】方式传输数据。
@@ -37,7 +39,7 @@ import (
 // @contact.name 	Stone
 // @contact.url		https://stone.siteol.com
 // @contact.email	stone@siteol.com
-// @host			127.0.0.1:8000
+// @host			localhost:8000
 // @BasePath  		/
 // @accept			json
 
@@ -63,8 +65,8 @@ func main() {
 	// 业务初始化
 	serviceInit()
 	// 初始化路由
-	router := router.NewRouter()
-	httpServer := &http.Server{Addr: config.JsonConfig.Server.Port, Handler: router}
+	newRouter := router.NewRouter()
+	httpServer := &http.Server{Addr: config.JsonConfig.Server.Port, Handler: newRouter}
 	// 启用HTTP服务 - 注册自定义路由
 	go comm.RecoverWrap(func() {
 		log.InfoTF(fmt.Sprintf("%s%s", config.SysNode, "INIT"), "Server Listening on port %s", config.JsonConfig.Server.Port)

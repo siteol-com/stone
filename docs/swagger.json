@@ -4,7 +4,7 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "物联网基座Stone，提供一个多层级SaaS化的基础开箱即用中台管理服务。\n# 概述\n该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。\n\n[Swagger[支持调试]](/docs/swagger/index.html) 丨 [ReDoc[阅读增强]](/docs/redoc/index.html)\n\n# API说明\n本系统的全部接口采用【POST】【application/json】方式传输数据。\n\n除开放接口以外的其他接口均需要通过【ApiKeyAuth:请求头[Token]】完成鉴权。",
+        "description": "物联网基座Stone，提供一个多层级SaaS化的基础开箱即用中台管理服务。\n# 概述\n该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。\n\n[Swagger[支持调试]：http://localhost:8000/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html)\n\n[ReDoc[阅读增强]：http://localhost:8000/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)\n\n# API说明\n本系统的全部接口采用【POST】【application/json】方式传输数据。\n\n除开放接口以外的其他接口均需要通过【ApiKeyAuth:请求头[Token]】完成鉴权。",
         "title": "Stone",
         "contact": {
             "name": "Stone",
@@ -17,16 +17,75 @@
             "url": "/docs/sc/logo.png"
         }
     },
-    "host": "127.0.0.1:8000",
+    "host": "localhost:8000",
     "basePath": "/",
     "paths": {
-        "/open/auth/login": {
+        "/docs/sample": {
             "post": {
                 "security": [
                     {
                         "Token": []
                     }
                 ],
+                "description": "系统API基本示例",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "开放接口"
+                ],
+                "summary": "通用API示例",
+                "operationId": "Sample示例",
+                "parameters": [
+                    {
+                        "description": "示例请求",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DemoReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "业务受理成功",
+                        "schema": {
+                            "$ref": "#/definitions/resp.DemoOk"
+                        }
+                    },
+                    "400": {
+                        "description": "数据校验失败",
+                        "schema": {
+                            "$ref": "#/definitions/resp.DemoVail"
+                        }
+                    },
+                    "401": {
+                        "description": "当前尚未登陆",
+                        "schema": {
+                            "$ref": "#/definitions/resp.DemoAuthLg"
+                        }
+                    },
+                    "403": {
+                        "description": "权限校验失败",
+                        "schema": {
+                            "$ref": "#/definitions/resp.DemoAuthNg"
+                        }
+                    },
+                    "500": {
+                        "description": "服务系统异常",
+                        "schema": {
+                            "$ref": "#/definitions/resp.DemoErr"
+                        }
+                    }
+                }
+            }
+        },
+        "/open/auth/login": {
+            "post": {
                 "description": "平台最基础的账号密码登陆方式登陆",
                 "consumes": [
                     "application/json"
@@ -68,24 +127,22 @@
                                 }
                             ]
                         }
-                    },
-                    "400": {
-                        "description": "数据校验失败",
-                        "schema": {
-                            "$ref": "#/definitions/resp.ResBody"
-                        }
-                    },
-                    "500": {
-                        "description": "登陆失败相关",
-                        "schema": {
-                            "$ref": "#/definitions/resp.ResBody"
-                        }
                     }
                 }
             }
         }
     },
     "definitions": {
+        "model.DemoReq": {
+            "type": "object",
+            "properties": {
+                "httpCode": {
+                    "description": "响应HTTPCode，不传默认响应200，支持200/400/401/403/500",
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
         "platModel.AuthLoginReq": {
             "type": "object",
             "required": [
@@ -114,6 +171,91 @@
                 "token": {
                     "description": "登陆Token",
                     "type": "string"
+                }
+            }
+        },
+        "resp.DemoAuthLg": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "响应码",
+                    "type": "string",
+                    "example": "E002"
+                },
+                "msg": {
+                    "description": "响应消息",
+                    "type": "string",
+                    "example": "当前尚未登陆"
+                }
+            }
+        },
+        "resp.DemoAuthNg": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "响应码",
+                    "type": "string",
+                    "example": "E003"
+                },
+                "msg": {
+                    "description": "响应消息",
+                    "type": "string",
+                    "example": "当前接口禁止访问"
+                }
+            }
+        },
+        "resp.DemoErr": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "响应码",
+                    "type": "string",
+                    "example": "E000"
+                },
+                "msg": {
+                    "description": "响应消息",
+                    "type": "string",
+                    "example": "系统异常"
+                }
+            }
+        },
+        "resp.DemoOk": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "响应码",
+                    "type": "string",
+                    "example": "S00X00X/F00X00X"
+                },
+                "data": {
+                    "description": "响应数据",
+                    "type": "string",
+                    "example": "响应数据"
+                },
+                "msg": {
+                    "description": "响应消息",
+                    "type": "string",
+                    "example": "操作成功/失败"
+                },
+                "unPop": {
+                    "description": "免弹窗提示",
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "resp.DemoVail": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "响应码",
+                    "type": "string",
+                    "example": "E001"
+                },
+                "msg": {
+                    "description": "响应消息",
+                    "type": "string",
+                    "example": "xx字段应该为必填"
                 }
             }
         },

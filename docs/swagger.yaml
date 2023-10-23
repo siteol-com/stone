@@ -2,6 +2,13 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  model.DemoReq:
+    properties:
+      httpCode:
+        description: 响应HTTPCode，不传默认响应200，支持200/400/401/403/500
+        example: 200
+        type: integer
+    type: object
   platModel.AuthLoginReq:
     properties:
       account:
@@ -24,6 +31,69 @@ definitions:
         description: 登陆Token
         type: string
     type: object
+  resp.DemoAuthLg:
+    properties:
+      code:
+        description: 响应码
+        example: E002
+        type: string
+      msg:
+        description: 响应消息
+        example: 当前尚未登陆
+        type: string
+    type: object
+  resp.DemoAuthNg:
+    properties:
+      code:
+        description: 响应码
+        example: E003
+        type: string
+      msg:
+        description: 响应消息
+        example: 当前接口禁止访问
+        type: string
+    type: object
+  resp.DemoErr:
+    properties:
+      code:
+        description: 响应码
+        example: E000
+        type: string
+      msg:
+        description: 响应消息
+        example: 系统异常
+        type: string
+    type: object
+  resp.DemoOk:
+    properties:
+      code:
+        description: 响应码
+        example: S00X00X/F00X00X
+        type: string
+      data:
+        description: 响应数据
+        example: 响应数据
+        type: string
+      msg:
+        description: 响应消息
+        example: 操作成功/失败
+        type: string
+      unPop:
+        description: 免弹窗提示
+        example: true
+        type: boolean
+    type: object
+  resp.DemoVail:
+    properties:
+      code:
+        description: 响应码
+        example: E001
+        type: string
+      msg:
+        description: 响应消息
+        example: xx字段应该为必填
+        type: string
+    type: object
   resp.ResBody:
     properties:
       code:
@@ -41,7 +111,7 @@ definitions:
         example: true
         type: boolean
     type: object
-host: 127.0.0.1:8000
+host: localhost:8000
 info:
   contact:
     email: stone@siteol.com
@@ -52,7 +122,9 @@ info:
     # 概述
     该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。
 
-    [Swagger[支持调试]](/docs/swagger/index.html) 丨 [ReDoc[阅读增强]](/docs/redoc/index.html)
+    [Swagger[支持调试]：http://localhost:8000/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html)
+
+    [ReDoc[阅读增强]：http://localhost:8000/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)
 
     # API说明
     本系统的全部接口采用【POST】【application/json】方式传输数据。
@@ -64,6 +136,47 @@ info:
     altText: Stone
     url: /docs/sc/logo.png
 paths:
+  /docs/sample:
+    post:
+      consumes:
+      - application/json
+      description: 系统API基本示例
+      operationId: Sample示例
+      parameters:
+      - description: 示例请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.DemoReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 业务受理成功
+          schema:
+            $ref: '#/definitions/resp.DemoOk'
+        "400":
+          description: 数据校验失败
+          schema:
+            $ref: '#/definitions/resp.DemoVail'
+        "401":
+          description: 当前尚未登陆
+          schema:
+            $ref: '#/definitions/resp.DemoAuthLg'
+        "403":
+          description: 权限校验失败
+          schema:
+            $ref: '#/definitions/resp.DemoAuthNg'
+        "500":
+          description: 服务系统异常
+          schema:
+            $ref: '#/definitions/resp.DemoErr'
+      security:
+      - Token: []
+      summary: 通用API示例
+      tags:
+      - 开放接口
   /open/auth/login:
     post:
       consumes:
@@ -89,16 +202,6 @@ paths:
                 data:
                   $ref: '#/definitions/platModel.AuthLoginRes'
               type: object
-        "400":
-          description: 数据校验失败
-          schema:
-            $ref: '#/definitions/resp.ResBody'
-        "500":
-          description: 登陆失败相关
-          schema:
-            $ref: '#/definitions/resp.ResBody'
-      security:
-      - Token: []
       summary: 开放账密登陆
       tags:
       - 开放接口

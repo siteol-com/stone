@@ -16,7 +16,7 @@ func NewRouter() *gin.Engine {
 	router := gin.Default()
 	// 公共的Panic中间件
 	router.Use(middleware.Recover)
-	// API文档
+	// API文档（示例文档）
 	subRouter.DocsRouter(router)
 	// 开放路由
 	subRouter.OpenRouter(router)

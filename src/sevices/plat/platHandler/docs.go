@@ -4,6 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
+	"siteOl.com/stone/server/src/data/model"
+	"siteOl.com/stone/server/src/data/resp"
+	"siteOl.com/stone/server/src/sevices"
 	"strings"
 )
 
@@ -62,6 +65,43 @@ var swaggerHtml = `<!DOCTYPE html>
 </script>
 </body>
 </html>`
+
+// Sample godoc
+// @id			 Sample示例
+// @Summary      通用API示例
+// @Description  系统API基本示例
+// @Router       /docs/sample [post]
+// @Tags         开放接口
+// @Accept       json
+// @Produce      json
+// @Security	 Token
+// @Param        req body model.DemoReq true "示例请求"
+// @Success      200 {object} resp.DemoOk "业务受理成功"
+// @Failure      400 {object} resp.DemoVail "数据校验失败"
+// @Failure      401 {object} resp.DemoAuthLg "当前尚未登陆"
+// @Failure      403 {object} resp.DemoAuthNg "权限校验失败"
+// @Failure      500 {object} resp.DemoErr "服务系统异常"
+func Sample(c *gin.Context) {
+	_, req, err := sevices.ValidateReqObj(c, &model.DemoReq{})
+	if err != nil {
+		c.JSON(http.StatusBadRequest, resp.DemoVail{Code: "E002", Msg: "参数非法"})
+		return
+	}
+	demoReq := req.(*model.DemoReq)
+	switch demoReq.HttpCode {
+	case http.StatusInternalServerError: // 500
+		c.JSON(http.StatusInternalServerError, resp.DemoErr{Code: "E000", Msg: "系统异常"})
+	case http.StatusBadRequest: // 400
+		c.JSON(http.StatusBadRequest, resp.DemoVail{Code: "E001", Msg: "参数非法"})
+	case http.StatusUnauthorized: // 401
+		c.JSON(http.StatusBadRequest, resp.DemoAuthLg{Code: "E002", Msg: "当前尚未登陆"})
+	case http.StatusForbidden: // 403
+		c.JSON(http.StatusBadRequest, resp.DemoAuthNg{Code: "E003", Msg: "禁止访问"})
+	default:
+		c.JSON(http.StatusOK, resp.DemoOk{Code: "S001", Msg: "业务请求成功"})
+	}
+	return
+}
 
 // ReDoc HTML加载
 func ReDoc(c *gin.Context) {
