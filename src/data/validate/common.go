@@ -11,7 +11,7 @@ import (
 )
 
 // Readable 请求数据解析和校验错误返回
-func Readable(c *gin.Context, req any) (error, any) {
+func Readable(c *gin.Context, req any) (*resp.ResBody, any) {
 	traceID := c.GetString(constant.TraceID)
 	var err error
 	// 根据请求采用不同绑定
@@ -24,8 +24,7 @@ func Readable(c *gin.Context, req any) (error, any) {
 	if err != nil {
 		errResult := readableError(err, c.GetString(constant.HeaderLang), traceID)
 		// 响应400错误（已翻译）
-		c.Set(constant.RespBody, resp.Validate(errResult))
-		return errResult, nil
+		return resp.Validate(errResult), nil
 	}
 	return nil, req
 }

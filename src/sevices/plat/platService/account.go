@@ -7,7 +7,7 @@ import (
 )
 
 // 检查账号状态
-func checkAccount(account *platDb.Account) (check bool, res resp.ResBody) {
+func checkAccount(account *platDb.Account) (check bool, res *resp.ResBody) {
 	// 账号状态不正确
 	if account.Status != constant.StatusOpen {
 		res = resp.Fail(constant.AccountStatusNG) // 账号状态不可用

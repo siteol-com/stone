@@ -1,23 +1,47 @@
-package middleware
+package resp
 
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"net/http"
 	"siteOl.com/stone/server/src/data/constant"
+	"siteOl.com/stone/server/src/data/mysql/platDb"
 	"siteOl.com/stone/server/src/data/redis"
-	"siteOl.com/stone/server/src/data/resp"
 	"siteOl.com/stone/server/src/utils/log"
 	"strings"
 )
 
-// TableMsgTrans 执行Msg翻译
-func TableMsgTrans(res resp.ResBody, lang, traceID string) string {
+// ReturnMsgTrans 执行响应码 => 响应文言 翻译
+func ReturnMsgTrans(res *ResBody, c *gin.Context, router *platDb.Router, traceID string) {
+	// 语言类型
+	lang := c.GetString(constant.HeaderLang)
+	// 非400校验错误执行翻译
+	if res.HttpCode != http.StatusBadRequest {
+		// 执行翻译
+		tableMsgTrans(res, lang, traceID)
+	}
+	// 响应日志
+	printBts := []byte("{}")
+	if router.PrintRes == constant.RouterLogPrintNot {
+		printBts = []byte("{ Res Set Not Print}")
+	} else {
+		// 如需打印日志
+		resBts, _ := json.Marshal(res)
+		// JSON序列化
+		printBts = resBts
+	}
+	log.InfoTF(traceID, "RespBody: %s", printBts)
+}
+
+// tableMsgTrans 执行Msg翻译
+func tableMsgTrans(res *ResBody, lang, traceID string) {
 	// 获取翻译缓存
 	tranStr, err := redis.Get(constant.CacheKeyTransLang)
 	if err != nil {
 		log.ErrorTF(traceID, "GetTransLangCacheMap Fail . Err Is : %v", err)
 		// 出错不翻译
-		return res.Msg
+		return
 
 	}
 	transMap := make(map[string]map[string]string)
@@ -25,7 +49,7 @@ func TableMsgTrans(res resp.ResBody, lang, traceID string) string {
 	if err != nil {
 		log.ErrorTF(traceID, "JsonUnmarshal TransMap Fail . Err Is : %v", err)
 		// 出错不翻译
-		return res.Msg
+		return
 	}
 	// 读取配置
 	codeMap, ok := transMap[res.Code]
@@ -33,15 +57,16 @@ func TableMsgTrans(res resp.ResBody, lang, traceID string) string {
 		langTemple, lok := codeMap[lang]
 		if lok {
 			// 检查是否有变量
+			// 有进行变量替换
 			if strings.Index(langTemple, "}}") > -1 {
-				return TableValReplace(langTemple, res.Data)
+				res.Msg = TableValReplace(langTemple, res.Data)
 			} else {
-				return langTemple
+				res.Msg = langTemple
 			}
 		}
 	}
 	// 无相关翻译
-	return res.Msg
+	return
 }
 
 // TableValReplace 执行变量替换

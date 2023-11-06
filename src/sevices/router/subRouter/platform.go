@@ -2,8 +2,8 @@ package subRouter
 
 import (
 	"github.com/gin-gonic/gin"
-	"siteOl.com/stone/server/src/router/middleware"
 	"siteOl.com/stone/server/src/sevices/plat/platHandler"
+	"siteOl.com/stone/server/src/sevices/router/middleware"
 )
 
 // PlatFormRouter 平台业务路由

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
+	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/model"
 	"siteOl.com/stone/server/src/data/resp"
 	"siteOl.com/stone/server/src/sevices"
@@ -84,21 +85,21 @@ var swaggerHtml = `<!DOCTYPE html>
 func Sample(c *gin.Context) {
 	_, req, err := sevices.ValidateReqObj(c, &model.DemoReq{})
 	if err != nil {
-		c.JSON(http.StatusBadRequest, resp.DemoVail{Code: "E002", Msg: "参数非法"})
+		c.JSON(http.StatusBadRequest, resp.DemoVail{Code: constant.ValidErr, Msg: "参数非法"})
 		return
 	}
 	demoReq := req.(*model.DemoReq)
 	switch demoReq.HttpCode {
 	case http.StatusInternalServerError: // 500
-		c.JSON(http.StatusInternalServerError, resp.DemoErr{Code: "E000", Msg: "系统异常"})
+		c.JSON(http.StatusInternalServerError, resp.DemoErr{Code: constant.SysErr, Msg: "系统异常"})
 	case http.StatusBadRequest: // 400
-		c.JSON(http.StatusBadRequest, resp.DemoVail{Code: "E001", Msg: "参数非法"})
+		c.JSON(http.StatusBadRequest, resp.DemoVail{Code: constant.ValidErr, Msg: "参数非法"})
 	case http.StatusUnauthorized: // 401
-		c.JSON(http.StatusBadRequest, resp.DemoAuthLg{Code: "E002", Msg: "当前尚未登陆"})
+		c.JSON(http.StatusBadRequest, resp.DemoAuthLg{Code: constant.LoginErr, Msg: "当前尚未登陆"})
 	case http.StatusForbidden: // 403
-		c.JSON(http.StatusBadRequest, resp.DemoAuthNg{Code: "E003", Msg: "禁止访问"})
+		c.JSON(http.StatusBadRequest, resp.DemoAuthNg{Code: constant.AuthErr, Msg: "禁止访问"})
 	default:
-		c.JSON(http.StatusOK, resp.DemoOk{Code: "S001", Msg: "业务请求成功"})
+		c.JSON(http.StatusOK, resp.DemoOk{Code: constant.Success, Msg: "业务请求成功"})
 	}
 	return
 }
@@ -131,7 +132,7 @@ func ScFile(c *gin.Context) {
 	}
 	data, err := os.ReadFile("docs" + fileInfo)
 	if err != nil {
-		c.JSON(404, nil)
+		c.JSON(http.StatusNotFound, nil)
 	} else {
 		c.Data(http.StatusOK, contextType, data)
 	}

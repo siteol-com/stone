@@ -3,7 +3,6 @@ package platHandler
 import (
 	"github.com/gin-gonic/gin"
 	"siteOl.com/stone/server/src/data/constant"
-	"siteOl.com/stone/server/src/data/resp"
 	"siteOl.com/stone/server/src/data/validate"
 	"siteOl.com/stone/server/src/utils/log"
 )
@@ -63,6 +62,5 @@ func AddAccount(c *gin.Context) {
 	//	c.Set(model.RespBody, model.ResponseSystemError)
 	//	return
 	//}
-	c.Set(constant.RespBody, resp.SuccessUnPop(nil))
 	return
 }

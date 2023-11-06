@@ -16,9 +16,19 @@
 
 ## 生成说明
 
+- 首次集成
+
 go install github.com/swaggo/swag/cmd/swag@latest
 
+- 初始化swagger.yaml文件
+
 swag init
+
+- 如果像本工程一样依赖了md文件
+
+swag init --md .
+
+- 删除多余的生成
 
 rm .\docs\docs.go
 

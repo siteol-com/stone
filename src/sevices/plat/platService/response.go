@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/model"
+	"siteOl.com/stone/server/src/data/model/platModel"
 	"siteOl.com/stone/server/src/data/mysql/actuator"
 	"siteOl.com/stone/server/src/data/mysql/platDb"
 	"siteOl.com/stone/server/src/data/redis"
 	"siteOl.com/stone/server/src/data/resp"
-	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/utils/log"
 	"strconv"
 	"strings"
@@ -16,7 +16,7 @@ import (
 )
 
 // PageResponse 查询响应码分页
-func PageResponse(traceID string, req *platModel.ResponsePageReq) resp.ResBody {
+func PageResponse(traceID string, req *platModel.ResponsePageReq) *resp.ResBody {
 	// 初始化Page
 	req.PageReq.PageInit()
 	// 组装Query
@@ -38,24 +38,20 @@ func PageResponse(traceID string, req *platModel.ResponsePageReq) resp.ResBody {
 	total, list, err := platDb.ResponseTable.Page(query)
 	if err != nil {
 		log.ErrorTF(traceID, "PageResponse Fail . Err Is : %v", err)
-		return resp.SysErr
+		return resp.ResFail
 	}
 	return resp.SuccessUnPop(model.SetPageRes(list, total))
 }
 
 // AddResponse 创建响应码
-func AddResponse(traceID string, req *platDb.Response) resp.ResBody {
-	req.ID = 0
-	now := time.Now()
-	req.CreateAt = &now
-	req.Status = constant.StatusOpen
-	req.Mark = constant.StatusOpen
+func AddResponse(traceID string, req *platModel.ResponseAddReq) *resp.ResBody {
+	dbReq := platModel.ResponseReqToDbReq(req)
 	// 响应码推算
-	err := makeResponseCode(traceID, req)
+	err := makeResponseCode(traceID, dbReq)
 	if err != nil {
 		log.ErrorTF(traceID, "ResponseMakeResponseCode Fail . Err Is : %v", err)
 		// 数据库系统异常
-		return resp.SysErr
+		return resp.ResFail
 	}
 	err = platDb.ResponseTable.InsertOne(req)
 	if err != nil {
@@ -75,14 +71,14 @@ func makeResponseCode(traceID string, req *platDb.Response) (err error) {
 		return
 	}
 	serviceCode, _ := strconv.Atoi(req.ServiceCode)
-	responseCode := fmt.Sprintf("%s%03d%03d", req.Type, serviceCode, groupCount)
+	responseCode := fmt.Sprintf("%s%d%03d", req.Type, serviceCode, groupCount)
 	log.InfoTF(traceID, "ResponseMakeResponseCode Success . Code Is : %s", responseCode)
 	req.Code = responseCode
 	return
 }
 
 // GetResponse 查询响应码
-func GetResponse(traceID string, req *model.IdReq) resp.ResBody {
+func GetResponse(traceID string, req *model.IdReq) *resp.ResBody {
 	response, err := platDb.ResponseTable.FindOneById(req.ID)
 	if err != nil {
 		log.ErrorTF(traceID, "GetResponse By Id %d Fail . Err Is : %v", req.ID, err)
@@ -94,7 +90,7 @@ func GetResponse(traceID string, req *model.IdReq) resp.ResBody {
 }
 
 // EditResponse 编辑响应码
-func EditResponse(traceID string, req *platDb.Response) resp.ResBody {
+func EditResponse(traceID string, req *platModel.ResponseEditReq) *resp.ResBody {
 	if req.ID == 0 {
 		// 响应码不存在 响应码查询失败
 		return resp.Fail(constant.ResponseGetNG)
@@ -124,7 +120,7 @@ func EditResponse(traceID string, req *platDb.Response) resp.ResBody {
 }
 
 // DelResponse 删除响应码
-func DelResponse(traceID string, req *model.IdReq) resp.ResBody {
+func DelResponse(traceID string, req *model.IdReq) *resp.ResBody {
 	response, err := platDb.ResponseTable.FindOneById(req.ID)
 	if err != nil {
 		log.ErrorTF(traceID, "GetResponse By Id %d Fail . Err Is : %v", req.ID, err)
@@ -135,7 +131,7 @@ func DelResponse(traceID string, req *model.IdReq) resp.ResBody {
 	err = platDb.ResponseTable.UpdateOne(response)
 	if err != nil {
 		log.ErrorTF(traceID, "DelResponse By Id %d Fail . Err Is : %v", req.ID, err)
-		return resp.SysErr
+		return resp.ResFail
 	}
 	// 刷新响应码缓存
 	go InitResponseCache(traceID)
@@ -144,7 +140,7 @@ func DelResponse(traceID string, req *model.IdReq) resp.ResBody {
 }
 
 // 转换数据库错误
-func checkResponseDBErr(err error) resp.ResBody {
+func checkResponseDBErr(err error) *resp.ResBody {
 	errStr := err.Error()
 	if strings.Contains(errStr, constant.DBDuplicateErr) {
 		if strings.Contains(errStr, "code_uni") {
@@ -153,7 +149,7 @@ func checkResponseDBErr(err error) resp.ResBody {
 		}
 	}
 	// 默认500
-	return resp.SysErr
+	return resp.ResFail
 }
 
 // InitResponseCache 初始化响应码缓存

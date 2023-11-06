@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"siteOl.com/stone/server/src/data/redis"
 	"siteOl.com/stone/server/src/sevices/plat/platService"
+	"siteOl.com/stone/server/src/sevices/router"
 	"syscall"
 	"time"
 
@@ -17,25 +18,11 @@ import (
 	"siteOl.com/stone/server/src/utils/log"
 
 	"siteOl.com/stone/server/src/data/config"
-	"siteOl.com/stone/server/src/router"
 )
 
 // @title			Stone
 // @version         1.0
-
-// @description   	物联网基座Stone，提供一个多层级SaaS化的基础开箱即用中台管理服务。
-// @description   	# 概述
-// @description   	该接口文档提供Swagger[支持调试]和ReDoc[阅读增强]两个版本。
-// @description
-// @description   	[Swagger[支持调试]：http://localhost:8000/docs/swagger/index.html](http://localhost:8000/docs/swagger/index.html)
-// @description
-// @description   	[ReDoc[阅读增强]：http://localhost:8000/docs/redoc/index.html](http://localhost:8000/docs/redoc/index.html)
-// @description
-// @description   	# API说明
-// @description   	本系统的全部接口采用【POST】【application/json】方式传输数据。
-// @description
-// @description   	除开放接口以外的其他接口均需要通过【ApiKeyAuth:请求头[Token]】完成鉴权。
-
+// @description.markdown
 // @contact.name 	Stone
 // @contact.url		https://stone.siteol.com
 // @contact.email	stone@siteol.com
@@ -51,10 +38,8 @@ import (
 
 // @tag.name 开放接口
 // @tag.description 基础开发接口
-// @tag.name 平台
-// @tag.description 基础开发接口
 
-// @x-tagGroups [{ "name": "基础", "tags": ["开放接口"]}]
+// @x-tagGroups [{ "name": "基础", "tags": ["开放接口"]},{ "name": "平台", "tags": ["租户管理","集团部门","角色配置","登陆账号","访问权限","路由接口","响应文言","数据字典"]}]
 
 // 主函数
 func main() {

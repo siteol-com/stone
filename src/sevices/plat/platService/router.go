@@ -3,17 +3,17 @@ package platService
 import (
 	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/model"
+	"siteOl.com/stone/server/src/data/model/platModel"
 	"siteOl.com/stone/server/src/data/mysql/actuator"
 	"siteOl.com/stone/server/src/data/mysql/platDb"
 	"siteOl.com/stone/server/src/data/redis"
 	"siteOl.com/stone/server/src/data/resp"
-	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/utils/log"
 	"strings"
 )
 
 // PageRouter 查询路由分页
-func PageRouter(traceID string, req *platModel.RouterPageReq) resp.ResBody {
+func PageRouter(traceID string, req *platModel.RouterPageReq) *resp.ResBody {
 	// 初始化Page
 	req.PageReq.PageInit()
 	// 组装Query
@@ -36,15 +36,15 @@ func PageRouter(traceID string, req *platModel.RouterPageReq) resp.ResBody {
 	total, list, err := platDb.RouterTable.Page(query)
 	if err != nil {
 		log.ErrorTF(traceID, "PageRouter Fail . Err Is : %v", err)
-		return resp.SysErr
+		return resp.ResFail
 	}
 	return resp.SuccessUnPop(model.SetPageRes(list, total))
 }
 
 // AddRouter 创建路由
-func AddRouter(traceID string, req *platDb.Router) resp.ResBody {
-	req.ID = 0
-	err := platDb.RouterTable.InsertOne(req)
+func AddRouter(traceID string, req *platModel.RouterAddReq) *resp.ResBody {
+	dbReq := platModel.RouterReqToDbReq(req)
+	err := platDb.RouterTable.InsertOne(dbReq)
 	if err != nil {
 		log.ErrorTF(traceID, "AddRouter Fail . Err Is : %v", err)
 		return checkRouterDBErr(err)
@@ -56,7 +56,7 @@ func AddRouter(traceID string, req *platDb.Router) resp.ResBody {
 }
 
 // GetRouter 查询路由
-func GetRouter(traceID string, req *model.IdReq) resp.ResBody {
+func GetRouter(traceID string, req *model.IdReq) *resp.ResBody {
 	router, err := platDb.RouterTable.FindOneById(req.ID)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRouter By Id %d Fail . Err Is : %v", req.ID, err)
@@ -68,11 +68,12 @@ func GetRouter(traceID string, req *model.IdReq) resp.ResBody {
 }
 
 // EditRouter 编辑路由
-func EditRouter(traceID string, req *platDb.Router) resp.ResBody {
+func EditRouter(traceID string, req *platModel.RouterEditReq) *resp.ResBody {
 	if req.ID == 0 {
 		// 路由不存在 路由查询失败
 		return resp.Fail(constant.RouteGetNG)
 	}
+	dbReq := platModel.RouterEditReqToDbReq(req)
 	router, err := platDb.RouterTable.FindOneById(req.ID)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRouter By Id %d Fail . Err Is : %v", req.ID, err)
@@ -80,7 +81,7 @@ func EditRouter(traceID string, req *platDb.Router) resp.ResBody {
 		return resp.Fail(constant.RouteGetNG)
 	}
 	// 更新信息（类型禁止修改）
-	req.Type = router.Type
+	dbReq.Type = router.Type
 	// 更新数据
 	err = platDb.RouterTable.UpdateOne(req)
 	if err != nil {
@@ -88,12 +89,12 @@ func EditRouter(traceID string, req *platDb.Router) resp.ResBody {
 		return checkRouterDBErr(err)
 	}
 	// 通知权限刷新，当URL变化时，并可能通知账号权限变动
-	if req.Type == constant.RouterTypeAuth && req.Url != router.Url {
+	if dbReq.Type == constant.RouterTypeAuth && req.Url != router.Url {
 		err = notifyChangeByRouter(req.ID, false, traceID)
 		if err != nil {
 			log.ErrorTF(traceID, "notifyChangeByRouter By Id %d Fail . Err Is : %v", req.ID, err)
 			// 移除路由权限关系失败
-			return resp.SysErr
+			return resp.ResFail
 		}
 	}
 	// 刷新白名单缓存
@@ -103,7 +104,7 @@ func EditRouter(traceID string, req *platDb.Router) resp.ResBody {
 }
 
 // DelRouter 删除路由
-func DelRouter(traceID string, req *model.IdReq) resp.ResBody {
+func DelRouter(traceID string, req *model.IdReq) *resp.ResBody {
 	router, err := platDb.RouterTable.FindOneById(req.ID)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRouter By Id %d Fail . Err Is : %v", req.ID, err)
@@ -116,13 +117,13 @@ func DelRouter(traceID string, req *model.IdReq) resp.ResBody {
 		if err != nil {
 			log.ErrorTF(traceID, "notifyChangeByRouter By Id %d Fail . Err Is : %v", req.ID, err)
 			// 移除路由权限关系失败
-			return resp.SysErr
+			return resp.ResFail
 		}
 	}
 	err = platDb.RouterTable.DeleteOne(req.ID)
 	if err != nil {
 		log.ErrorTF(traceID, "DelRouter By Id %d Fail . Err Is : %v", req.ID, err)
-		return resp.SysErr
+		return resp.ResFail
 	}
 	// 刷新白名单缓存
 	go InitRouterCache(traceID)
@@ -131,7 +132,7 @@ func DelRouter(traceID string, req *model.IdReq) resp.ResBody {
 }
 
 // 转换数据库错误
-func checkRouterDBErr(err error) resp.ResBody {
+func checkRouterDBErr(err error) *resp.ResBody {
 	errStr := err.Error()
 	if strings.Contains(errStr, constant.DBDuplicateErr) {
 		if strings.Contains(errStr, "url_uni") {
@@ -144,7 +145,7 @@ func checkRouterDBErr(err error) resp.ResBody {
 		}
 	}
 	// 默认500
-	return resp.SysErr
+	return resp.ResFail
 }
 
 // InitRouterCache 初始化免授权路由列表

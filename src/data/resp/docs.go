@@ -2,10 +2,10 @@ package resp
 
 // DemoOk 200
 type DemoOk struct {
-	Code  string `json:"code" example:"S00X00X/F00X00X"` // 响应码
-	Msg   string `json:"msg" example:"操作成功/失败"`          // 响应消息
-	Data  string `json:"data" example:"响应数据"`            // 响应数据
-	UnPop bool   `json:"unPop" example:"true"`           // 免弹窗提示
+	Code  string `json:"code" example:"SX00X/FX00X"` // 响应码
+	Msg   string `json:"msg" example:"操作成功/失败"`      // 响应消息
+	Data  string `json:"data" example:"响应数据"`        // 响应数据
+	UnPop bool   `json:"unPop" example:"true"`       // 免弹窗提示
 }
 
 // DemoErr 500

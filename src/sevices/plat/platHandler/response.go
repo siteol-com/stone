@@ -2,60 +2,98 @@ package platHandler
 
 import (
 	"github.com/gin-gonic/gin"
-	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/model"
-	"siteOl.com/stone/server/src/data/mysql/platDb"
+	"siteOl.com/stone/server/src/data/model/platModel"
 	"siteOl.com/stone/server/src/sevices"
-	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/sevices/plat/platService"
 )
 
-// PageResponse /plat/response/page 响应码分页
+// PageResponse godoc
+// @id			 PageResponse响应码分页
+// @Summary      响应码分页
+// @Description  查询响应码分页数据
+// @Router       /plat/response/page [post]
+// @Tags         响应文言
+// @Accept       json
+// @Produce      json
+// @Security	 Token
+// @Param        req body platModel.ResponsePageReq true "请求"
+// @Success      200 {object} resp.ResBody{data=model.PageRes{list=[]platDb.Response}} "响应成功"
 func PageResponse(c *gin.Context) {
 	traceID, req, err := sevices.ValidateReqObj(c, &platModel.ResponsePageReq{})
-	if err != nil {
-		return
+	if err == nil {
+		sevices.JsonRes(c, platService.PageResponse(traceID, req.(*platModel.ResponsePageReq)))
 	}
-	res := platService.PageResponse(traceID, req.(*platModel.ResponsePageReq))
-	c.Set(constant.RespBody, res)
 }
 
-// AddResponse /plat/response/add 响应码创建
+// AddResponse godoc
+// @id			 AddResponse响应码创建
+// @Summary      响应码创建
+// @Description  创建一个全新的响应码
+// @Router       /plat/response/add [post]
+// @Tags         响应文言
+// @Accept       json
+// @Produce      json
+// @Security	 Token
+// @Param        req body platModel.ResponseAddReq true "请求"
+// @Success      200 {object} resp.ResBody{data=bool} "响应成功"
 func AddResponse(c *gin.Context) {
-	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Response{})
-	if err != nil {
-		return
+	traceID, req, err := sevices.ValidateReqObj(c, &platModel.ResponseAddReq{})
+	if err == nil {
+		sevices.JsonRes(c, platService.AddResponse(traceID, req.(*platModel.ResponseAddReq)))
 	}
-	res := platService.AddResponse(traceID, req.(*platDb.Response))
-	c.Set(constant.RespBody, res)
 }
 
-// GetResponse /plat/response/get 响应码查询
+// GetResponse godoc
+// @id			 GetResponse响应码查询
+// @Summary      响应码查询
+// @Description  根据ID查询响应码
+// @Router       /plat/response/get [post]
+// @Tags         响应文言
+// @Accept       json
+// @Produce      json
+// @Security	 Token
+// @Param        req body model.IdReq true "请求"
+// @Success      200 {object} resp.ResBody{data=platDb.Response} "响应成功"
 func GetResponse(c *gin.Context) {
 	traceID, req, err := sevices.ValidateReqObj(c, &model.IdReq{})
-	if err != nil {
-		return
+	if err == nil {
+		sevices.JsonRes(c, platService.GetResponse(traceID, req.(*model.IdReq)))
 	}
-	res := platService.GetResponse(traceID, req.(*model.IdReq))
-	c.Set(constant.RespBody, res)
 }
 
-// EditResponse /plat/response/edit 响应码编辑
+// EditResponse godoc
+// @id			 EditResponse响应码编辑
+// @Summary      响应码编辑
+// @Description  根据ID编辑响应码，只有部分字段可以修改
+// @Router       /plat/response/edit [post]
+// @Tags         响应文言
+// @Accept       json
+// @Produce      json
+// @Security	 Token
+// @Param        req body platModel.ResponseEditReq true "请求"
+// @Success      200 {object} resp.ResBody{data=bool} "响应成功"
 func EditResponse(c *gin.Context) {
-	traceID, req, err := sevices.ValidateReqObj(c, &platDb.Response{})
-	if err != nil {
-		return
+	traceID, req, err := sevices.ValidateReqObj(c, &platModel.ResponseEditReq{})
+	if err == nil {
+		sevices.JsonRes(c, platService.EditResponse(traceID, req.(*platModel.ResponseEditReq)))
 	}
-	res := platService.EditResponse(traceID, req.(*platDb.Response))
-	c.Set(constant.RespBody, res)
 }
 
-// DelResponse /plat/response/del 响应码删除
+// DelResponse godoc
+// @id			 DelResponse响应码删除
+// @Summary      响应码删除
+// @Description  根据ID删除响应码，本数据为软删除
+// @Router       /plat/response/del [post]
+// @Tags         响应文言
+// @Accept       json
+// @Produce      json
+// @Security	 Token
+// @Param        req body model.IdReq true "请求"
+// @Success      200 {object} resp.ResBody{data=bool} "响应成功"
 func DelResponse(c *gin.Context) {
 	traceID, req, err := sevices.ValidateReqObj(c, &model.IdReq{})
-	if err != nil {
-		return
+	if err == nil {
+		sevices.JsonRes(c, platService.DelResponse(traceID, req.(*model.IdReq)))
 	}
-	res := platService.DelResponse(traceID, req.(*model.IdReq))
-	c.Set(constant.RespBody, res)
 }

@@ -9,14 +9,14 @@ import (
 
 // Response 响应码
 type Response struct {
-	ID          uint64 `json:"id"  binding:"numeric"`                  // 数据ID
-	Code        string `json:"code"`                                   // 响应码 2/5+XXX+XXX
-	ServiceCode string `json:"serviceCode" binding:"required,numeric"` // 业务ID，来源于字典，指定响应码归属业务
-	Type        string `json:"type" binding:"required,oneof='2' '5'"`  // 响应类型，该字段用于筛选，可配置2和5
-	ZhCn        string `json:"zhCn"`                                   // 中文响应文言
-	EnUs        string `json:"enUs"`                                   // 英文响应文言
-	Remark      string `json:"remark"`                                 // 其他备注信息
-	Mark        string `json:"mark"`                                   // 变更标识 0可变更 1禁止变更
+	ID          uint64 `json:"id" example:"1"`                   // 数据ID
+	Code        string `json:"code" example:"F7000"`             // 响应码 F/S+XXX+XXX
+	ServiceCode string `json:"serviceCode" example:"7"`          // 业务ID，来源于字典，指定响应码归属业务
+	Type        string `json:"type" example:"F"`                 // 响应类型，该字段用于筛选，可配置F和S
+	ZhCn        string `json:"zhCn" example:"角色查询失败"`            // 中文响应文言
+	EnUs        string `json:"enUs" example:"Role query failed"` // 英文响应文言
+	Remark      string `json:"remark" example:"角色查询失败"`          // 其他备注信息
+	Mark        string `json:"mark" example:"0"`                 // 变更标识 0可变更 1禁止变更
 	Common
 }
 

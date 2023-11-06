@@ -10,52 +10,53 @@ package constant
  */
 
 const (
-	Success       = "200" // 默认成功文言（内置禁止修改）
-	SysFail       = "500" // 默认系统错误（内置禁止修改）
-	ValidateFail  = "400" // 参数校验错误（内置禁止修改）
-	LoginFail     = "401" // 默认登陆错误（内置禁止修改）
-	AuthFail      = "403" // 默认授权错误（内置禁止修改）
-	AuthResetFail = "405" // 默认授权刷新（内置禁止修改）
+	Success  = "S0000" // 默认成功文言（内置禁止修改）
+	SysFail  = "F0000" // 默认业务错误（内置禁止修改）
+	SysErr   = "E0000" // 系统未知错误（内置禁止修改）
+	ValidErr = "E0001" // 参数校验错误（内置禁止修改）（免翻译）
+	LoginErr = "E0002" // 默认登陆错误（内置禁止修改）
+	AuthErr  = "E0003" // 默认授权错误（内置禁止修改）
+	ResetErr = "E0004" // 默认授权刷新（内置禁止修改）
 
-	TenantGetOK    = "2001000" // 租户信息获取成功
-	TenantGetNG    = "5001000" // 租户信息获取失败
-	TenantStatusNG = "5001001" // 该租户暂不可用
-	TenantExpNG    = "5001002" // 该租户已过期
+	TenantGetOK    = "S1000" // 租户信息获取成功
+	TenantGetNG    = "F1000" // 租户信息获取失败
+	TenantStatusNG = "F1001" // 该租户暂不可用
+	TenantExpNG    = "F1002" // 该租户已过期
 
-	AccountLoginOK  = "2002000" // 账号登陆成功
-	AccountLoginNG  = "5002000" // 账号或密码错误
-	AccountStatusNG = "5002001" // 账号暂不可用
+	AccountLoginOK  = "S2000" // 账号登陆成功
+	AccountLoginNG  = "F2000" // 账号或密码错误
+	AccountStatusNG = "F2001" // 账号暂不可用
 
-	RouteAddOK     = "2003000" // 路由创建成功
-	RouteEditOK    = "2003001" // 路由更新成功
-	RouteDelOK     = "2003002" // 路由删除成功
-	RouteGetNG     = "5003000" // 路由查询失败
-	RouteUniUrlNG  = "5003001" // 路由地址不可重复
-	RouteUniNameNG = "5003002" // 路由名称不可重复
+	RouteAddOK     = "S3000" // 路由创建成功
+	RouteEditOK    = "S3001" // 路由更新成功
+	RouteDelOK     = "S3002" // 路由删除成功
+	RouteGetNG     = "F3000" // 路由查询失败
+	RouteUniUrlNG  = "F3001" // 路由地址不可重复
+	RouteUniNameNG = "F3002" // 路由名称不可重复
 
-	ResponseAddOK     = "2005000" // 响应码创建成功
-	ResponseEditOK    = "2005001" // 响应码编辑成功
-	ResponseDelOK     = "2005002" // 响应码删除成功
-	ResponseGetNG     = "5005000" // 响应码查询失败
-	ResponseUniCodeNG = "5005001" // 响应码不可重复
+	ResponseAddOK     = "S5000" // 响应码创建成功
+	ResponseEditOK    = "S5001" // 响应码编辑成功
+	ResponseDelOK     = "S5002" // 响应码删除成功
+	ResponseGetNG     = "F5000" // 响应码查询失败
+	ResponseUniCodeNG = "F5001" // 响应码不可重复
 
-	PermissionAddOK       = "2006000" // 权限创建成功
-	PermissionEditOK      = "2006001" // 权限编辑成功
-	PermissionDelOK       = "2006002" // 权限删除成功
-	PermissionSortOK      = "2006003" // 权限排序成功
-	PermissionGetNG       = "5006000" // 权限查询失败
-	PermissionUniNameNG   = "5006001" // 权限名不可重复
-	PermissionUniAliasNG  = "5006002" // 权限别名不可重复
-	PermissionUniRouterNG = "5006003" // 权限关联路由不可重复
-	PermissionDelChildNG  = "5006004" // 权限存在子集不可删除
-	PermissionSortNG      = "5006005" // 权限排序失败
+	PermissionAddOK       = "S6000" // 权限创建成功
+	PermissionEditOK      = "S6001" // 权限编辑成功
+	PermissionDelOK       = "S6002" // 权限删除成功
+	PermissionSortOK      = "S6003" // 权限排序成功
+	PermissionGetNG       = "F6000" // 权限查询失败
+	PermissionUniNameNG   = "F6001" // 权限名不可重复
+	PermissionUniAliasNG  = "F6002" // 权限别名不可重复
+	PermissionUniRouterNG = "F6003" // 权限关联路由不可重复
+	PermissionDelChildNG  = "F6004" // 权限存在子集不可删除
+	PermissionSortNG      = "F6005" // 权限排序失败
 
-	RoleAddOK           = "2007000" // 角色创建成功
-	RoleEditOK          = "2007001" // 角色编辑成功
-	RoleDelOK           = "2007002" // 角色删除成功
-	RoleGetNG           = "5007000" // 角色查询失败
-	RoleUniNameNG       = "5007001" // 角色名不可重复
-	RoleUniPermissionNG = "5007002" // 角色权限不可重复
-	RoleEditLockNG      = "5007003" // 该角色不可编辑
-	RoleDelLockNG       = "5007004" // 该角色不可删除
+	RoleAddOK           = "S7000" // 角色创建成功
+	RoleEditOK          = "S7001" // 角色编辑成功
+	RoleDelOK           = "S7002" // 角色删除成功
+	RoleGetNG           = "F7000" // 角色查询失败
+	RoleUniNameNG       = "F7001" // 角色名不可重复
+	RoleUniPermissionNG = "F7002" // 角色权限不可重复
+	RoleEditLockNG      = "F7003" // 该角色不可编辑
+	RoleDelLockNG       = "F7004" // 该角色不可删除
 )

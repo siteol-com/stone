@@ -2,10 +2,11 @@ package platService
 
 import (
 	"siteOl.com/stone/server/src/data/constant"
+	"siteOl.com/stone/server/src/data/model"
+	"siteOl.com/stone/server/src/data/model/platModel"
 	"siteOl.com/stone/server/src/data/mysql/platDb"
 	"siteOl.com/stone/server/src/data/redis"
 	"siteOl.com/stone/server/src/data/resp"
-	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/utils/comm"
 	"siteOl.com/stone/server/src/utils/log"
 	"siteOl.com/stone/server/src/utils/security"
@@ -13,7 +14,7 @@ import (
 )
 
 // AuthLogin 账号登录
-func AuthLogin(traceID string, req *platModel.AuthLoginReq) resp.ResBody {
+func AuthLogin(traceID string, req *platModel.AuthLoginReq) *resp.ResBody {
 	// 查询租户
 	tenant, err := platDb.TenantTable.FindOneByObject(&platDb.Tenant{Alias: req.TenantAlias})
 	if err != nil {
@@ -58,7 +59,7 @@ func AuthLogin(traceID string, req *platModel.AuthLoginReq) resp.ResBody {
 // 设置登陆授权数据 （失败不影响登陆过）
 func setAuthUser(account *platDb.Account, token, traceID string) {
 	// 初始化授权结构体
-	authUser := platModel.AuthUser{
+	authUser := model.AuthUser{
 		UserId:         account.ID,
 		TenantId:       account.TenantId,
 		DeptId:         account.DeptId,

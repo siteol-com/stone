@@ -13,7 +13,7 @@ type Role struct {
 	TenantId uint64 // 租户ID（后端赋值）
 	Mark     string // 变更标识 0可变更1禁止变更（前端不提交后端默认0）
 	Common
-	PermissionIds []uint64 `json:"permissionIds" binding:"unique" gorm:"-"` // 权限集，当前对象会忽略此字段，权限合法性校验交给控制层
+	PermissionIds []uint64 `json:"permissionIds" gorm:"-"` // 权限集，当前对象会忽略此字段，权限合法性校验交给控制层
 }
 
 // RoleTable 角色泛型构造器

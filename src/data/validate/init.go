@@ -16,7 +16,7 @@ import (
 	zhTrans "github.com/go-playground/validator/v10/translations/zh"
 )
 
-var v *validator.Validate                        // TODO 自定义校验器使用
+var v *validator.Validate                        // 自定义校验器使用
 var transMap = make(map[string]ut.Translator, 0) // 校验错误取这个Map进行错误翻译
 
 // init

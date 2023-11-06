@@ -2,8 +2,8 @@ package router
 
 import (
 	"io/ioutil"
-	"siteOl.com/stone/server/src/router/middleware"
-	"siteOl.com/stone/server/src/router/subRouter"
+	"siteOl.com/stone/server/src/sevices/router/middleware"
+	subRouter2 "siteOl.com/stone/server/src/sevices/router/subRouter"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,10 +17,10 @@ func NewRouter() *gin.Engine {
 	// 公共的Panic中间件
 	router.Use(middleware.Recover)
 	// API文档（示例文档）
-	subRouter.DocsRouter(router)
+	subRouter2.DocsRouter(router)
 	// 开放路由
-	subRouter.OpenRouter(router)
+	subRouter2.OpenRouter(router)
 	// 平台路由
-	subRouter.PlatFormRouter(router)
+	subRouter2.PlatFormRouter(router)
 	return router
 }

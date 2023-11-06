@@ -2,8 +2,8 @@ package model
 
 // PageReq 分页查询对象
 type PageReq struct {
-	Current  int `json:"current"`  // 当前页
-	PageSize int `json:"pageSize"` // 单页数量
+	Current  int `json:"current" example:"1"`   // 当前页
+	PageSize int `json:"pageSize" example:"10"` // 单页数量
 }
 
 // PageInit 分页初始化 默认第一页 默认10条数据

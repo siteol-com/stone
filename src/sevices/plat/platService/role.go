@@ -3,17 +3,17 @@ package platService
 import (
 	"siteOl.com/stone/server/src/data/constant"
 	"siteOl.com/stone/server/src/data/model"
+	"siteOl.com/stone/server/src/data/model/platModel"
 	"siteOl.com/stone/server/src/data/mysql/actuator"
 	"siteOl.com/stone/server/src/data/mysql/platDb"
 	"siteOl.com/stone/server/src/data/resp"
-	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/utils/log"
 	"strings"
 	"time"
 )
 
 // PageRole 查询角色分页
-func PageRole(traceID string, req *platModel.RolePageReq) resp.ResBody {
+func PageRole(traceID string, req *platModel.RolePageReq) *resp.ResBody {
 	// 初始化Page
 	req.PageReq.PageInit()
 	// 组装Query
@@ -30,26 +30,22 @@ func PageRole(traceID string, req *platModel.RolePageReq) resp.ResBody {
 	total, list, err := platDb.RoleTable.Page(query)
 	if err != nil {
 		log.ErrorTF(traceID, "PageRole Fail . Err Is : %v", err)
-		return resp.SysErr
+		return resp.ResFail
 	}
 	return resp.SuccessUnPop(model.SetPageRes(list, total))
 }
 
 // AddRole 创建角色
-func AddRole(traceID string, req *platDb.Role) resp.ResBody {
-	req.ID = 0
-	now := time.Now()
-	req.CreateAt = &now
-	req.Status = constant.StatusOpen
-	req.Mark = constant.StatusOpen // 平台创建角色可变更
-	err := platDb.RoleTable.InsertOne(req)
+func AddRole(traceID string, req *platModel.RoleAddReq) *resp.ResBody {
+	dbReq := platModel.RoleReqToDbReq(req)
+	err := platDb.RoleTable.InsertOne(dbReq)
 	if err != nil {
 		log.ErrorTF(traceID, "AddRole Fail . Err Is : %v", err)
 		return checkRoleDBErr(err)
 	}
 	// 插入角色权限集
-	if len(req.PermissionIds) > 0 {
-		err := refreshRolePermissions(req, false, traceID)
+	if len(dbReq.PermissionIds) > 0 {
+		err := refreshRolePermissions(dbReq, false, traceID)
 		if err != nil {
 			return checkRoleDBErr(err)
 		}
@@ -59,7 +55,7 @@ func AddRole(traceID string, req *platDb.Role) resp.ResBody {
 }
 
 // GetRole 查询角色 tenantId（控制层补充）
-func GetRole(traceID string, req *model.IdAnTenantReq) resp.ResBody {
+func GetRole(traceID string, req *model.IdAnTenantReq) *resp.ResBody {
 	role, err := platDb.RoleTable.FindOneByObject(req)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRole By Id %d Fail . Err Is : %v", req.ID, err)
@@ -71,7 +67,7 @@ func GetRole(traceID string, req *model.IdAnTenantReq) resp.ResBody {
 }
 
 // EditRole 编辑角色
-func EditRole(traceID string, req *platDb.Role) resp.ResBody {
+func EditRole(traceID string, req *platModel.RoleEditReq) *resp.ResBody {
 	if req.ID == 0 {
 		// 角色不存在 角色查询失败
 		return resp.Fail(constant.RoleGetNG)
@@ -90,6 +86,7 @@ func EditRole(traceID string, req *platDb.Role) resp.ResBody {
 	now := time.Now()
 	// 仅可修改以下项目
 	res.UpdateAt = &now
+	res.Name = req.Name
 	res.Remark = req.Remark
 	// 更新数据
 	err = platDb.RoleTable.UpdateOne(res)
@@ -98,7 +95,8 @@ func EditRole(traceID string, req *platDb.Role) resp.ResBody {
 		return checkRoleDBErr(err)
 	}
 	// 更新角色权限集
-	err = refreshRolePermissions(req, true, traceID)
+	res.PermissionIds = req.PermissionIds
+	err = refreshRolePermissions(&res, true, traceID)
 	if err != nil {
 		return checkRoleDBErr(err)
 	}
@@ -109,7 +107,7 @@ func EditRole(traceID string, req *platDb.Role) resp.ResBody {
 }
 
 // DelRole 删除角色
-func DelRole(traceID string, req *model.IdAnTenantReq) resp.ResBody {
+func DelRole(traceID string, req *model.IdAnTenantReq) *resp.ResBody {
 	role, err := platDb.RoleTable.FindOneByObject(req)
 	if err != nil {
 		log.ErrorTF(traceID, "GetRole By Id %d Fail . Err Is : %v", req.ID, err)
@@ -125,7 +123,7 @@ func DelRole(traceID string, req *model.IdAnTenantReq) resp.ResBody {
 	err = platDb.RoleTable.DeleteOne(role.ID)
 	if err != nil {
 		log.ErrorTF(traceID, "DelRole By Id %d Fail . Err Is : %v", req.ID, err)
-		return resp.SysErr
+		return resp.ResFail
 	}
 	// 角色变动通知账号
 	go notifyChangeByRoleIds([]uint64{req.ID}, true, traceID)
@@ -134,7 +132,7 @@ func DelRole(traceID string, req *model.IdAnTenantReq) resp.ResBody {
 }
 
 // 转换数据库错误
-func checkRoleDBErr(err error) resp.ResBody {
+func checkRoleDBErr(err error) *resp.ResBody {
 	errStr := err.Error()
 	if strings.Contains(errStr, constant.DBDuplicateErr) {
 		if strings.Contains(errStr, "name_tenant_id_uni") {
@@ -147,5 +145,5 @@ func checkRoleDBErr(err error) resp.ResBody {
 		}
 	}
 	// 默认500
-	return resp.SysErr
+	return resp.ResFail
 }

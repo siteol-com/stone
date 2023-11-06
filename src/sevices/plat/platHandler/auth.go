@@ -2,8 +2,8 @@ package platHandler
 
 import (
 	"github.com/gin-gonic/gin"
+	"siteOl.com/stone/server/src/data/model/platModel"
 	"siteOl.com/stone/server/src/sevices"
-	"siteOl.com/stone/server/src/sevices/plat/platModel"
 	"siteOl.com/stone/server/src/sevices/plat/platService"
 )
 
@@ -19,9 +19,8 @@ import (
 // @Success      200 {object} resp.ResBody{data=platModel.AuthLoginRes} "登陆成功"
 func AuthLogin(c *gin.Context) {
 	traceID, req, err := sevices.ValidateReqObj(c, &platModel.AuthLoginReq{})
-	if err != nil {
-		return
+	if err == nil {
+		// 执行登陆
+		sevices.JsonRes(c, platService.AuthLogin(traceID, req.(*platModel.AuthLoginReq)))
 	}
-	// 执行登陆
-	sevices.JsonRes(c, platService.AuthLogin(traceID, req.(*platModel.AuthLoginReq)))
 }
